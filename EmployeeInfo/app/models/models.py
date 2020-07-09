@@ -61,6 +61,9 @@ class Employee(Base):
     # 备注
     comments = sa.Column(sa.String(500), nullable=True)
 
+    def __str__(self):
+        return 'name: %s' % self.name
+
 
 if __name__ == "__main__":
     Base.metadata.create_all(engine)
