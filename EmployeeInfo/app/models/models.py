@@ -19,19 +19,22 @@ class Employee(Base):
     # 性别
     sex = sa.Column(sa.String(20), nullable=False)
 
+    # 民族
+    nation = sa.Column(sa.String(20), nullable=False)
+
+    # 籍贯
+    nativePlace = sa.Column(sa.String(50), nullable=False)
+
     # 身份证号
     idCard = sa.Column(sa.String(30), nullable=False)
 
     # 护照ID(可以为空)
     passportId = sa.Column(sa.String(20), nullable=True)
 
-    # 年龄(TBD：根据身份证号自动生成)
+    # 生日(TBD：根据身份证号自动生成)
     birthday = sa.Column(sa.Date, nullable=False)
 
-    # 民族
-    nation = sa.Column(sa.String(20), nullable=False)
-
-    # 入职时间
+    # 入职时间(默认为填写日期)
     entryTime = sa.Column(sa.Date, nullable=True)
 
     # 学历
@@ -51,6 +54,9 @@ class Employee(Base):
 
     # 联系电话
     phoneNum = sa.Column(sa.String(20), nullable=False)
+
+    # 邮箱地址
+    mail = sa.Column(sa.String(20), nullable=False)
 
     # 门禁卡编号
     accessCard = sa.Column(sa.String(20), nullable=True)
