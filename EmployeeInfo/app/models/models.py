@@ -13,50 +13,50 @@ class Employee(Base):
     # 主键
     id = sa.Column(sa.Integer, primary_key=True)
 
+    # 邮箱地址
+    mail = sa.Column(sa.String(20), nullable=False)
+
     # 姓名
-    name = sa.Column(sa.String(20), nullable=False)
+    name = sa.Column(sa.String(20), nullable=True)
 
     # 性别
-    sex = sa.Column(sa.String(20), nullable=False)
+    sex = sa.Column(sa.String(20), nullable=True)
 
     # 民族
-    nation = sa.Column(sa.String(20), nullable=False)
+    nation = sa.Column(sa.String(20), nullable=True)
 
     # 籍贯
-    nativePlace = sa.Column(sa.String(50), nullable=False)
+    nativePlace = sa.Column(sa.String(50), nullable=True)
 
     # 身份证号
-    idCard = sa.Column(sa.String(30), nullable=False)
+    idCard = sa.Column(sa.String(30), nullable=True)
 
     # 护照ID(可以为空)
     passportId = sa.Column(sa.String(20), nullable=True)
 
     # 生日(TBD：根据身份证号自动生成)
-    birthday = sa.Column(sa.Date, nullable=False)
+    birthday = sa.Column(sa.Date, nullable=True)
 
     # 入职时间(默认为填写日期)
     entryTime = sa.Column(sa.Date, nullable=True)
 
     # 学历
-    education = sa.Column(sa.String(20), nullable=False)
+    education = sa.Column(sa.String(20), nullable=True)
 
     # 毕业院校
-    school = sa.Column(sa.String(20), nullable=False)
+    school = sa.Column(sa.String(20), nullable=True)
 
     # 专业
-    speciality = sa.Column(sa.String(80), nullable=False)
+    speciality = sa.Column(sa.String(80), nullable=True)
 
     # 部门
-    department = sa.Column(sa.String(20), nullable=False)
+    department = sa.Column(sa.String(20), nullable=True)
 
     # 职务
     duty = sa.Column(sa.String(20), nullable=True)
 
     # 联系电话
-    phoneNum = sa.Column(sa.String(20), nullable=False)
-
-    # 邮箱地址
-    mail = sa.Column(sa.String(20), nullable=False)
+    phoneNum = sa.Column(sa.String(20), nullable=True)
 
     # 门禁卡编号
     accessCard = sa.Column(sa.String(20), nullable=True)
@@ -66,9 +66,6 @@ class Employee(Base):
 
     # 备注
     comments = sa.Column(sa.String(500), nullable=True)
-
-    def __str__(self):
-        return 'name: %s' % self.name
 
 
 if __name__ == "__main__":
