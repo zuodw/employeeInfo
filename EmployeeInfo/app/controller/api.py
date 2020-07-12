@@ -5,14 +5,14 @@ from flask import request
 import json
 
 
-@app.route('/GetAllEmployeeInfo')
+@app.route('/api/GetAllEmployeeInfo')
 def GetAllEmployeeInfo():
     employees = session.query(Employee).filter(Employee.id == 2).one()
     print(employees)
     return employees.name
 
 
-@app.route('/AddEmployeeInfo', methods=['POST'])
+@app.route('/api/AddEmployeeInfo', methods=['POST'])
 def AddEmployeeInfo():
     employee = Employee()
     data = json.loads(request.get_data(as_text=True))

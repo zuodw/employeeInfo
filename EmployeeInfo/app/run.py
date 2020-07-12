@@ -1,6 +1,7 @@
 from flask_cors import CORS
 from app import app
 from app.controller import api
+from app.controller import views
 
 if __name__ == '__main__':
     CORS(app, suppors_credentials=True)

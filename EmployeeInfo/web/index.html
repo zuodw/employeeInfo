@@ -3,7 +3,7 @@
 <title></title>
 <head>
     <meta charset="utf-8">
-    <script src="js/vue.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
@@ -95,7 +95,7 @@
             methods: {
                 submitForm(formData) {
                     axios
-                        .post('http://localhost:5000/AddEmployeeInfo', {params: this.formData})
+                        .post('http://localhost:5000/api/AddEmployeeInfo', {params: this.formData})
                         .then(response => {console.log(123)})
                 }
             }
