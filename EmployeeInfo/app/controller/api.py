@@ -34,3 +34,9 @@ def AddEmployeeInfo():
     return 'ok'
 
 
+@app.route('/api/ApplyVerifyCode', methods=['POST'])
+def ApplyVerifyCode():
+    data = json.loads(request.get_data(as_text=True))
+    mail = data['params']
+    print(mail)
+    return 'ok'

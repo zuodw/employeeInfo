@@ -6,6 +6,7 @@
         <el-form label-width="80px" :model="formData" :rules="rules" ref="ruleForm">
           <el-form-item label="邮件地址" prop="mail">
             <el-input v-model="formData.mail"></el-input>
+            <el-button type="text" @click="applyVerifyCode()">发送验证码</el-button>
           </el-form-item>
           <el-form-item label="验证码" prop="verifyCode">
             <el-input v-model="formData.verifyCode"></el-input>
@@ -21,7 +22,7 @@
 
 <script>
 export default {
-  name: 'Login',
+  name: 'SignUp',
   data () {
     return {
       labelPosition: 'right',
@@ -40,10 +41,15 @@ export default {
     }
   },
   methods: {
+    applyVerifyCode () {
+      this.$axios
+        .post('http://localhost:5000/api/ApplyVerifyCode', {params: this.formData.mail})
+        .then(response => { console.log(456) })
+    },
     submitForm (formData) {
       this.$axios
-        .post('http://localhost:5000/api/Login', {params: this.formData})
-        .then(response => { console.log(456) })
+        .post('http://localhost:5000/api/SignUp', {params: this.formData})
+        .then(response => { console.log(789) })
     }
   }
 }
