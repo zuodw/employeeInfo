@@ -43,12 +43,12 @@ export default {
   methods: {
     applyVerifyCode () {
       this.$axios
-        .post('http://localhost:5000/api/ApplyVerifyCode', {params: this.formData.mail})
+        .post('/api/ApplyVerifyCode', {params: this.formData.mail})
         .then(response => { console.log(456) })
     },
     submitForm (formData) {
       this.$axios
-        .post('http://localhost:5000/api/SignUp', {params: this.formData})
+        .post('/api/SignUp', {params: this.formData})
         .then(response => { console.log(789) })
     }
   }

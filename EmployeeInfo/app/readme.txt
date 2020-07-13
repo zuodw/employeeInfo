@@ -1,7 +1,13 @@
+0. cnpm安装
+    npm install -g cnpm --registry=https://registry.npm.taobao.org
+
+    npm install webpack-dev-server -g
+
 1. vue project创建：
-    1. web文件夹下 vue init webpack employee-info-web
-    2. cd employee-info-web
-    3. npm run dev
+    1. npm install -g vue-cli
+    2. web文件夹下 vue init webpack employee-info-web
+    3. cd employee-info-web
+    4. npm run dev
 
 2. 安装ElementUI依赖
     cnpm install element-ui --save

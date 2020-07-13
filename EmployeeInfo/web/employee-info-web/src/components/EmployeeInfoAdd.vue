@@ -85,7 +85,7 @@ export default {
   methods: {
     submitForm (formData) {
       this.$axios
-        .post('http://localhost:5000/api/AddEmployeeInfo', {params: this.formData})
+        .post('/api/AddEmployeeInfo', {params: this.formData})
         .then(response => { console.log(123) })
     }
   }

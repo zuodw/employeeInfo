@@ -3,6 +3,8 @@ from app.models.models import session
 from app.models.models import Employee
 from flask import request
 import json
+from app import mail
+from flask_mail import Message
 
 
 @app.route('/api/GetAllEmployeeInfo')
@@ -37,6 +39,7 @@ def AddEmployeeInfo():
 @app.route('/api/ApplyVerifyCode', methods=['POST'])
 def ApplyVerifyCode():
     data = json.loads(request.get_data(as_text=True))
-    mail = data['params']
-    print(mail)
+    msg = Message('验证码', sender='zuodw@qq.com', recipients=[data['params']])
+    msg.body = '您的验证码是：123456'
+    mail.send(msg)
     return 'ok'
