@@ -1,15 +1,19 @@
-from app import app
-from app.models.models import session
-from app.models.models import Employee
-from flask import request
 import json
-from app import mail
+import random
+import string
+
+from flask import request, session
 from flask_mail import Message
+
+from app import app
+from app import mail
+from app.models.models import Employee
+from app.models.models import dbSession
 
 
 @app.route('/api/GetAllEmployeeInfo')
 def GetAllEmployeeInfo():
-    employees = session.query(Employee).filter(Employee.id == 2).one()
+    employees = dbSession.query(Employee).filter(Employee.id == 2).one()
     print(employees)
     return employees.name
 
@@ -31,15 +35,38 @@ def AddEmployeeInfo():
     employee.phoneNum = data['params']['phoneNum']
     employee.mail = data['params']['mail']
 
-    session.add(employee)
-    session.commit()
+    dbSession.add(employee)
+    dbSession.commit()
     return 'ok'
 
 
 @app.route('/api/ApplyVerifyCode', methods=['POST'])
 def ApplyVerifyCode():
     data = json.loads(request.get_data(as_text=True))
-    msg = Message('验证码', sender='zuodw@qq.com', recipients=[data['params']])
-    msg.body = '您的验证码是：123456'
+    userMail = data['params']
+    msg = Message('验证码', sender='zuodw@qq.com', recipients=[userMail])
+    verifyCode = "".join(random.sample([x for x in string.ascii_letters + string.digits], 6))
+    print(verifyCode)
+    msg.body = '您的验证码是：' + verifyCode
     mail.send(msg)
+
+    session['mail'] = userMail
+    session['verifyCode'] = verifyCode
+
+    return 'ok'
+
+
+@app.route('/api/SignUp', methods=['POST'])
+def SignUp():
+    data = json.loads(request.get_data(as_text=True))
+    userMail = data['params']['mail']
+    verifyCode = data['params']['verifyCode']
+    print(session)
+    print(session.get('verifyCode'))
+    if userMail == session.get('mail') and verifyCode == session.get('verifyCode'):
+        employee = Employee()
+        employee.mail = userMail
+        dbSession.add(employee)
+        dbSession.commit()
+
     return 'ok'

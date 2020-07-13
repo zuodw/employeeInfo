@@ -1,6 +1,6 @@
 from app.models.models import Employee
 from app.models import DBSession
-from app.models.models import session
+from app.models.models import dbSession
 from app.models.models import Base
 from app.models import engine
 
@@ -28,8 +28,8 @@ employee.pcNum = ''
 employee.comments = ''
 
 
-session.add(employee)
-session.commit()
-session.close()
+dbSession.add(employee)
+dbSession.commit()
+dbSession.close()
 
 

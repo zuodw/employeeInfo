@@ -9,5 +9,5 @@ engine = sa.create_engine(url)
 # 创建DBSession类型:
 DBSession = sessionmaker(engine)
 
-session = DBSession()
+dbSession = DBSession()
 

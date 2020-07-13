@@ -4,6 +4,7 @@ import os
 
 app = Flask(__name__)
 app.config.update(
+    SECRET_KEY=os.urandom(24),
     MAIL_SERVER='smtp.qq.com',
     MAIL_PORT=587,
     MAIL_USE_TLS=True,

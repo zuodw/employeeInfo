@@ -40,9 +40,6 @@
           <el-form-item label="部门">
             <el-input v-model="formData.department"></el-input>
           </el-form-item>
-          <el-form-item label="手机号码">
-            <el-input v-model="formData.phoneNum"></el-input>
-          </el-form-item>
           <el-form-item label="邮箱地址">
             <el-input v-model="formData.mail"></el-input>
           </el-form-item>

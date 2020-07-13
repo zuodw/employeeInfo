@@ -2,7 +2,7 @@ import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 from app.models import engine
 from app import app
-from app.models import session
+from app.models import dbSession
 
 Base = declarative_base()
 
@@ -10,11 +10,8 @@ Base = declarative_base()
 class Employee(Base):
     __tablename__ = 'employee'
 
-    # 主键
-    id = sa.Column(sa.Integer, primary_key=True)
-
     # 邮箱地址
-    mail = sa.Column(sa.String(20), nullable=False)
+    mail = sa.Column(sa.String(20), primary_key=True)
 
     # 姓名
     name = sa.Column(sa.String(20), nullable=True)
