@@ -11,6 +11,21 @@ from app.models.models import Employee
 from app.models.models import VerifyInfo
 from app.models.models import dbSession
 
+from app.controller.employeecontroller import EmployeeController
+from app.controller.verifycontroller import VerifyController
+
+
+# 发送验证码邮件
+def sendVerifyCodeMail(userMail):
+    msg = Message('验证码', sender='zuodw@qq.com', recipients=[userMail])
+    verifyCode = "".join(random.sample([x for x in string.ascii_letters + string.digits], 6))
+    print(verifyCode)
+    msg.body = '您的验证码是：' + verifyCode
+    mail.send(msg)
+
+    # 认证信息保存
+    VerifyController.add(userMail, verifyCode)
+
 
 @app.route('/api/GetAllEmployeeInfo')
 def GetAllEmployeeInfo():
@@ -45,17 +60,14 @@ def AddEmployeeInfo():
 def ApplyVerifyCode():
     data = json.loads(request.get_data(as_text=True))
     userMail = data['params']
-    msg = Message('验证码', sender='zuodw@qq.com', recipients=[userMail])
-    verifyCode = "".join(random.sample([x for x in string.ascii_letters + string.digits], 6))
-    print(verifyCode)
-    msg.body = '您的验证码是：' + verifyCode
-    mail.send(msg)
 
-    info = VerifyInfo()
-    info.mail = userMail
-    info.verifyCode = verifyCode
-    dbSession.add(info)
-    dbSession.commit()
+    employee = EmployeeController.query_byMail(userMail)
+
+    if employee:
+        print("该邮件已经注册!")
+        return "该邮件已经注册!"
+    else:
+        sendVerifyCodeMail(userMail)
 
     return 'ok'
 
@@ -66,14 +78,14 @@ def SignUp():
     userMail = data['params']['mail']
     verifyCode = data['params']['verifyCode']
 
-    info = dbSession.query(VerifyInfo).filter(VerifyInfo.mail == userMail).one()
-    if info:
-        if userMail == info.mail and verifyCode == info.verifyCode:
+    vi = VerifyController.query_byMail(userMail)
+    if vi:
+        if userMail == vi.mail and verifyCode == vi.verifyCode:
             print("Verify Success.")
 
-            employee = Employee()
-            employee.mail = userMail
-            dbSession.add(employee)
-            dbSession.commit()
+            # 认证成功，添加用户
+            EmployeeController.add(userMail)
 
+            # 删除认证信息
+            VerifyController.delete(userMail)
     return 'ok'
