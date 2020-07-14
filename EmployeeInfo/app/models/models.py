@@ -65,5 +65,15 @@ class Employee(Base):
     comments = sa.Column(sa.String(500), nullable=True)
 
 
+class VerifyInfo(Base):
+    __tablename__ = 'verifyinfo'
+
+    # mail
+    mail = sa.Column(sa.String(20), primary_key=True)
+
+    # verifyCode
+    verifyCode = sa.Column(sa.String(20), nullable=False)
+
+
 if __name__ == "__main__":
     Base.metadata.create_all(engine)

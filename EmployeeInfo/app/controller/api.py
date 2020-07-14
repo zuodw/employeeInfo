@@ -2,12 +2,13 @@ import json
 import random
 import string
 
-from flask import request, session
+from flask import request
 from flask_mail import Message
 
 from app import app
 from app import mail
 from app.models.models import Employee
+from app.models.models import VerifyInfo
 from app.models.models import dbSession
 
 
@@ -50,8 +51,11 @@ def ApplyVerifyCode():
     msg.body = '您的验证码是：' + verifyCode
     mail.send(msg)
 
-    session['mail'] = userMail
-    session['verifyCode'] = verifyCode
+    info = VerifyInfo()
+    info.mail = userMail
+    info.verifyCode = verifyCode
+    dbSession.add(info)
+    dbSession.commit()
 
     return 'ok'
 
@@ -61,12 +65,15 @@ def SignUp():
     data = json.loads(request.get_data(as_text=True))
     userMail = data['params']['mail']
     verifyCode = data['params']['verifyCode']
-    print(session)
-    print(session.get('verifyCode'))
-    if userMail == session.get('mail') and verifyCode == session.get('verifyCode'):
-        employee = Employee()
-        employee.mail = userMail
-        dbSession.add(employee)
-        dbSession.commit()
+
+    info = dbSession.query(VerifyInfo).filter(VerifyInfo.mail == userMail).one()
+    if info:
+        if userMail == info.mail and verifyCode == info.verifyCode:
+            print("Verify Success.")
+
+            employee = Employee()
+            employee.mail = userMail
+            dbSession.add(employee)
+            dbSession.commit()
 
     return 'ok'
