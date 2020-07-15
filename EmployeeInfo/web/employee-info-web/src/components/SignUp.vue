@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-container style="margin-left:auto; margin-right:auto; width:60%; border: 1px solid #eee">
+    <el-container style="margin-left:auto; margin-right:auto; width: 400px; border: 1px solid #eee">
       <el-header class="el-header">欢迎来到王者荣耀</el-header>
       <el-main>
-        <el-form label-width="80px" :model="formData" :rules="rules" ref="ruleForm">
+        <el-form :label-position="labelPosition" label-width="80px" :model="formData" :rules="rules" ref="ruleForm">
           <el-form-item label="邮件地址" prop="mail">
             <el-input v-model="formData.mail"></el-input>
             <el-button type="text" @click="applyVerifyCode()">发送验证码</el-button>
@@ -25,10 +25,10 @@ export default {
   name: 'SignUp',
   data () {
     return {
-      labelPosition: 'right',
+      labelPosition: 'top',
       formData: {
-        mail: 'test@qq.com',
-        verifyCode: '123456'
+        mail: '',
+        verifyCode: ''
       },
       rules: {
         mail: [
@@ -44,12 +44,26 @@ export default {
     applyVerifyCode () {
       this.$axios
         .post('/api/ApplyVerifyCode', {params: this.formData.mail})
-        .then(response => { console.log(456) })
+        .then(response => {
+          if (response.data.errCode === '0') {
+            this.$message({
+              message: '验证码已发送至您的邮箱，请注意查收。',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: response.data.errMsg,
+              type: 'error'
+            })
+          }
+        })
     },
     submitForm (formData) {
       this.$axios
         .post('/api/SignUp', {params: this.formData})
-        .then(response => { console.log(789) })
+        .then(response => {
+          this.$router.replace('/employeeInfoUpdate')
+        })
     }
   }
 }

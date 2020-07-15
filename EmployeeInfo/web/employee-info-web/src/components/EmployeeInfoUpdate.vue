@@ -3,7 +3,7 @@
     <el-container style="margin-left:auto; margin-right:auto; width:60%; border: 1px solid #eee">
       <el-header class="el-header">欢迎来到王者荣耀</el-header>
       <el-main>
-        <el-form label-width="80px" :model="formData" :rules="rules" ref="ruleForm">
+        <el-form :label-position="labelPosition" label-width="80px" :model="formData" :rules="rules" ref="ruleForm">
           <el-form-item label="姓名" prop="name">
             <el-input v-model="formData.name"></el-input>
           </el-form-item>

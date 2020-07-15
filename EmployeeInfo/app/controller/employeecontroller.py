@@ -20,5 +20,3 @@ class EmployeeController:
     def query_byMail(mail):
         employee = dbSession.query(Employee).filter(Employee.mail == mail).first()
         return employee
-
-

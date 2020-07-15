@@ -2,7 +2,7 @@ import json
 import random
 import string
 
-from flask import request
+from flask import request, jsonify
 from flask_mail import Message
 
 from app import app
@@ -21,10 +21,14 @@ def sendVerifyCodeMail(userMail):
     verifyCode = "".join(random.sample([x for x in string.ascii_letters + string.digits], 6))
     print(verifyCode)
     msg.body = '您的验证码是：' + verifyCode
-    mail.send(msg)
+    try:
+        mail.send(msg)
+    except Exception as e:
+        return False
 
     # 认证信息保存
     VerifyController.add(userMail, verifyCode)
+    return True
 
 
 @app.route('/api/GetAllEmployeeInfo')
@@ -65,11 +69,12 @@ def ApplyVerifyCode():
 
     if employee:
         print("该邮件已经注册!")
-        return "该邮件已经注册!"
+        return {'errCode': '-2', 'errMsg': '该邮件已经注册!请直接登录。'}
     else:
-        sendVerifyCodeMail(userMail)
+        if not sendVerifyCodeMail(userMail):
+            return jsonify({'errCode': '-1', 'errMsg': '邮件发送失败'})
 
-    return 'ok'
+    return jsonify({'errCode': '0', 'errMsg': 'OK'})
 
 
 @app.route('/api/SignUp', methods=['POST'])
