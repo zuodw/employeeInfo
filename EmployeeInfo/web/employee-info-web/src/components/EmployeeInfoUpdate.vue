@@ -41,7 +41,7 @@
             <el-input v-model="formData.department"></el-input>
           </el-form-item>
           <el-form-item label="邮箱地址">
-            <el-input v-model="formData.mail"></el-input>
+            <el-input :disabled="true" v-model="formData.mail"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('formData')">提交</el-button>
@@ -54,23 +54,23 @@
 
 <script>
 export default {
-  name: 'EmployeeInfoAdd',
+  name: 'EmployeeInfoUpdate',
   data () {
     return {
       labelPosition: 'right',
       formData: {
-        name: '左',
-        sex: '男',
-        nation: '汉族',
-        nativePlace: '山东青岛',
-        idCard: '370285198900000000',
+        name: '',
+        sex: '',
+        nation: '',
+        nativePlace: '',
+        idCard: '',
         passportId: '',
-        education: '本科',
-        school: '理工大学',
-        speciality: '数学',
-        department: '組み込み系',
-        phoneNum: '18688886666',
-        mail: 'zzz@163.com'
+        education: '',
+        school: '',
+        speciality: '',
+        department: '',
+        phoneNum: '',
+        mail: ''
       },
       rules: {
         name: [
@@ -79,10 +79,14 @@ export default {
       }
     }
   },
+  created: function () {
+    console.log(sessionStorage.getItem('user'))
+    this.formData.mail = sessionStorage.getItem('user')
+  },
   methods: {
     submitForm (formData) {
       this.$axios
-        .post('/api/AddEmployeeInfo', {params: this.formData})
+        .post('/api/UpdateEmployeeInfo', {params: this.formData})
         .then(response => { console.log(123) })
     }
   }

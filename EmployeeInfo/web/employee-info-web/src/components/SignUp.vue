@@ -40,6 +40,9 @@ export default {
       }
     }
   },
+  created: function () {
+    console.log('SignUp Created.')
+  },
   methods: {
     applyVerifyCode () {
       this.$axios
@@ -62,7 +65,10 @@ export default {
       this.$axios
         .post('/api/SignUp', {params: this.formData})
         .then(response => {
-          this.$router.replace('/employeeInfoUpdate')
+          if (response.data.errCode === '0') {
+            sessionStorage.setItem('user', this.formData.mail)
+            this.$router.replace('/employeeInfoUpdate')
+          }
         })
     }
   }

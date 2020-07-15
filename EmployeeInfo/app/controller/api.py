@@ -38,26 +38,27 @@ def GetAllEmployeeInfo():
     return employees.name
 
 
-@app.route('/api/AddEmployeeInfo', methods=['POST'])
-def AddEmployeeInfo():
-    employee = Employee()
+@app.route('/api/UpdateEmployeeInfo', methods=['POST'])
+def UpdateEmployeeInfo():
     data = json.loads(request.get_data(as_text=True))
+    userMail = data['params']['mail']
+    employee = EmployeeController.query_byMail(userMail)
     employee.name = data['params']['name']
     employee.sex = data['params']['sex']
     employee.idCard = data['params']['idCard']
-    employee.birthday = '19901212'
+    employee.birthday = employee.idCard[6:14]
     employee.nation = data['params']['nation']
     employee.nativePlace = data['params']['nativePlace']
     employee.education = data['params']['education']
     employee.school = data['params']['school']
     employee.speciality = data['params']['speciality']
-    employee.department = 'web'
+    employee.department = ''
     employee.phoneNum = data['params']['phoneNum']
     employee.mail = data['params']['mail']
 
-    dbSession.add(employee)
-    dbSession.commit()
-    return 'ok'
+    EmployeeController.update(employee)
+
+    return jsonify({'errCode': '0', 'errMsg': 'OK'})
 
 
 @app.route('/api/ApplyVerifyCode', methods=['POST'])
@@ -93,4 +94,5 @@ def SignUp():
 
             # 删除认证信息
             VerifyController.delete(userMail)
-    return 'ok'
+
+    return jsonify({'errCode': '0', 'errMsg': 'OK'})

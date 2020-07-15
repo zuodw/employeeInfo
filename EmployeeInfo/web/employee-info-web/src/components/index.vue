@@ -32,6 +32,9 @@ export default {
       }
     }
   },
+  created: function () {
+    console.log('Index Created.')
+  },
   methods: {
     signUp () {
       this.$router.replace('/signup')
