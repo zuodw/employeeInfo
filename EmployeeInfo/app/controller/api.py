@@ -96,3 +96,17 @@ def SignUp():
             VerifyController.delete(userMail)
 
     return jsonify({'errCode': '0', 'errMsg': 'OK'})
+
+
+@app.route('/api/GetPersonalInfo', methods=['GET'])
+def GetPersonalInfo():
+    employee = EmployeeController.query_byMail(request.args.to_dict()['mail'])
+    return jsonify({
+        'errCode': '0',
+        'errMsg': 'OK',
+        'params': {
+            'mail': employee.mail,
+            'name': employee.name,
+            'birthday': employee.birthday
+        }
+    })

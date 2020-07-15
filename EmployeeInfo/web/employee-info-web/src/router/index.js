@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import EmployeeInfoUpdate from '@/components/EmployeeInfoUpdate'
 import SignUp from '@/components/SignUp'
 import Index from '@/components/Index'
+import MyPage from '@/components/MyPage'
 import axios from 'axios'
 
 Vue.use(Router)
@@ -21,6 +22,14 @@ export default new Router({
       }
     },
     {
+      path: '/signup',
+      name: 'SignUp',
+      component: SignUp,
+      meta: {
+        isLogin: false
+      }
+    },
+    {
       path: '/employeeInfoUpdate',
       name: 'EmployeeInfoUpdate',
       component: EmployeeInfoUpdate,
@@ -29,11 +38,11 @@ export default new Router({
       }
     },
     {
-      path: '/signup',
-      name: 'SignUp',
-      component: SignUp,
+      path: '/mypage',
+      name: 'MyPage',
+      component: MyPage,
       meta: {
-        isLogin: false
+        isLogin: true
       }
     }
   ]

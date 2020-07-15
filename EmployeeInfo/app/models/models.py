@@ -31,7 +31,7 @@ class Employee(Base):
     # 护照ID(可以为空)
     passportId = sa.Column(sa.String(20), nullable=True)
 
-    # 生日(TBD：根据身份证号自动生成)
+    # 生日(根据身份证号自动生成)
     birthday = sa.Column(sa.Date, nullable=True)
 
     # 入职时间(默认为填写日期)

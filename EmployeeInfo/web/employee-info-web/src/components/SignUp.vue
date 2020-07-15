@@ -51,12 +51,14 @@ export default {
           if (response.data.errCode === '0') {
             this.$message({
               message: '验证码已发送至您的邮箱，请注意查收。',
-              type: 'success'
+              type: 'success',
+              center: true
             })
           } else {
             this.$message({
               message: response.data.errMsg,
-              type: 'error'
+              type: 'error',
+              center: true
             })
           }
         })
@@ -66,7 +68,7 @@ export default {
         .post('/api/SignUp', {params: this.formData})
         .then(response => {
           if (response.data.errCode === '0') {
-            sessionStorage.setItem('user', this.formData.mail)
+            sessionStorage.setItem('userMail', this.formData.mail)
             this.$router.replace('/employeeInfoUpdate')
           }
         })

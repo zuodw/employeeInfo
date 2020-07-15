@@ -80,14 +80,22 @@ export default {
     }
   },
   created: function () {
-    console.log(sessionStorage.getItem('user'))
-    this.formData.mail = sessionStorage.getItem('user')
+    this.formData.mail = sessionStorage.getItem('userMail')
   },
   methods: {
     submitForm (formData) {
       this.$axios
         .post('/api/UpdateEmployeeInfo', {params: this.formData})
-        .then(response => { console.log(123) })
+        .then(response => {
+          if (response.data.errCode === '0') {
+            this.$alert('个人信息更新完成，点击前往个人页主页。', '提交结果', {
+              confirmButtonText: '前往个人主页',
+              callback: action => {
+                this.$router.replace('/myPage')
+              }
+            })
+          }
+        })
     }
   }
 }
