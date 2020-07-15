@@ -15,17 +15,26 @@ export default new Router({
     {
       path: '/',
       name: 'Index',
-      component: Index
+      component: Index,
+      meta: {
+        isLogin: false
+      }
     },
     {
       path: '/employeeInfoUpdate',
       name: 'EmployeeInfoUpdate',
-      component: EmployeeInfoUpdate
+      component: EmployeeInfoUpdate,
+      meta: {
+        isLogin: true
+      }
     },
     {
       path: '/signup',
       name: 'SignUp',
-      component: SignUp
+      component: SignUp,
+      meta: {
+        isLogin: false
+      }
     }
   ]
 })
