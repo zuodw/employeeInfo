@@ -17,6 +17,11 @@ class EmployeeController:
         dbSession.commit()
 
     @staticmethod
+    def delete(user):
+        dbSession.delete(user)
+        dbSession.commit()
+
+    @staticmethod
     def query_byMail(mail):
         employee = dbSession.query(Employee).filter(Employee.mail == mail).first()
         return employee

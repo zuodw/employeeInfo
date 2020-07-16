@@ -1,12 +1,24 @@
 <template>
   <div>
-    <el-container style="margin-left:auto; margin-right:auto; width:60%; border: 1px solid #eee">
+    <el-container style="margin-left:auto; margin-right:auto; width:800px; border: 1px solid #eee">
       <el-header class="el-header">欢迎来到王者荣耀
-        <el-button type="primary" @click="signUp('formData')">注册</el-button>
+        <template v-if='userMail'>
+          <el-button type="primary" @click="toMyPage">前往个人主页</el-button>
+        </template>
+        <template v-else>
+          <el-button type="primary" @click="signUp()">注册</el-button>
+          <el-button type="primary" @click="signIn()">登录</el-button>
+        </template>
       </el-header>
       <el-main>
-        大家好，我是主页。
-        请点击右上角【注册】按钮。
+        <template v-if='userMail'>
+          欢迎你，{{ this.userMail }}。
+        </template>
+        <template v-else>
+          大家好，我是主页。<br />
+          未注册的同事，请点击【注册】按钮。<br />
+          已注册的同事，请点击【登录】按钮。
+        </template>
       </el-main>
     </el-container>
   </div>
@@ -18,6 +30,7 @@ export default {
   data () {
     return {
       labelPosition: 'right',
+      userMail: '',
       formData: {
         mail: 'test@qq.com',
         verifyCode: '123456'
@@ -34,10 +47,18 @@ export default {
   },
   created: function () {
     console.log('Index Created.')
+    console.log(sessionStorage.getItem('userMail'))
+    this.userMail = sessionStorage.getItem('userMail')
   },
   methods: {
     signUp () {
       this.$router.replace('/signup')
+    },
+    signIn () {
+      this.$router.replace('/signin')
+    },
+    toMyPage () {
+      this.$router.replace('/mypage')
     }
   }
 }

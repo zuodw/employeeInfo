@@ -18,7 +18,7 @@ class VerifyController:
 
     @staticmethod
     def query_byMail(mail):
-        vi = dbSession.query(VerifyInfo).filter(VerifyInfo.mail == mail).one()
+        vi = dbSession.query(VerifyInfo).filter(VerifyInfo.mail == mail).first()
         return vi
 
     @staticmethod

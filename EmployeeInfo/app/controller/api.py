@@ -65,7 +65,7 @@ def UpdateEmployeeInfo():
 @app.route('/api/ApplyVerifyCode', methods=['POST'])
 def ApplyVerifyCode():
     data = json.loads(request.get_data(as_text=True))
-    userMail = data['params']
+    userMail = data['params']['mail']
 
     employee = EmployeeController.query_byMail(userMail)
 
@@ -115,4 +115,16 @@ def GetPersonalInfo():
 
 @app.route('/api/download', methods=['GET', 'POST'])
 def Download():
-    return send_from_directory(os.path.join(os.getcwd(), "static/download"), filename="GetComputerInfo.py", as_attachment=True)
+    return send_from_directory(os.path.join(os.getcwd(), "static/download"), filename="GetComputerInfo.py",
+                               as_attachment=True)
+
+
+@app.route('/api/DeleteEmployeeInfo', methods=['POST'])
+def DeleteEmployeeInfo():
+    data = json.loads(request.get_data(as_text=True))
+    userMail = data['params']['mail']
+    employee = EmployeeController.query_byMail(userMail)
+    if employee:
+        EmployeeController.delete(employee)
+
+    return jsonify({'errCode': '0', 'errMsg': 'OK'})

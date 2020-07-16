@@ -6,10 +6,9 @@
         <el-form :label-position="labelPosition" label-width="80px" :model="formData" :rules="rules" ref="ruleForm">
           <el-form-item label="邮件地址" prop="mail">
             <el-input v-model="formData.mail"></el-input>
-            <el-button type="text" @click="applyVerifyCode()">发送验证码</el-button>
           </el-form-item>
-          <el-form-item label="验证码" prop="verifyCode">
-            <el-input v-model="formData.verifyCode"></el-input>
+          <el-form-item label="密码" prop="password">
+            <el-input v-model="formData.password"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('formData')">提交</el-button>
@@ -22,58 +21,35 @@
 
 <script>
 export default {
-  name: 'SignUp',
+  name: 'SignIn',
   data () {
     return {
       labelPosition: 'top',
       formData: {
         mail: '',
-        verifyCode: ''
+        password: ''
       },
       rules: {
         mail: [
           {required: true, message: '请输入您的邮箱地址', trigger: 'blur'}
         ],
-        verifyCode: [
-          {required: true, message: '请输入验证码', trigger: 'blur'}
+        password: [
+          {required: true, message: '请输入密码', trigger: 'blur'}
         ]
       }
     }
   },
   created: function () {
-    console.log('SignUp Created.')
+    console.log('SignIn Created.')
   },
   methods: {
-    applyVerifyCode () {
-      this.$axios
-        .post('/api/ApplyVerifyCode', {
-          params: {
-            'mail': this.formData.mail
-          }
-        })
-        .then(response => {
-          if (response.data.errCode === '0') {
-            this.$message({
-              message: '验证码已发送至您的邮箱，请注意查收。',
-              type: 'success',
-              center: true
-            })
-          } else {
-            this.$message({
-              message: response.data.errMsg,
-              type: 'error',
-              center: true
-            })
-          }
-        })
-    },
     submitForm (formData) {
       this.$axios
-        .post('/api/SignUp', {params: this.formData})
+        .post('/api/SignIn', {params: this.formData})
         .then(response => {
           if (response.data.errCode === '0') {
             sessionStorage.setItem('userMail', this.formData.mail)
-            this.$router.replace('/employeeInfoUpdate')
+            this.$router.replace('/index')
           }
         })
     }
