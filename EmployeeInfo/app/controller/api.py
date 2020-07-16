@@ -47,7 +47,10 @@ def UpdateEmployeeInfo():
     employee.name = data['params']['name']
     employee.sex = data['params']['sex']
     employee.idCard = data['params']['idCard']
-    employee.birthday = employee.idCard[6:14]
+    if employee.idCard:
+        employee.birthday = employee.idCard[6:14]
+    else:
+        employee.birthday = '19491001'
     employee.nation = data['params']['nation']
     employee.nativePlace = data['params']['nativePlace']
     employee.education = data['params']['education']
@@ -113,9 +116,9 @@ def GetPersonalInfo():
     })
 
 
-@app.route('/api/download', methods=['GET', 'POST'])
+@app.route('/api/Download', methods=['GET', 'POST'])
 def Download():
-    return send_from_directory(os.path.join(os.getcwd(), "static/download"), filename="GetComputerInfo.py",
+    return send_from_directory(os.path.join(os.getcwd(), r'static/download'), filename="GetComputerInfo.exe",
                                as_attachment=True)
 
 
