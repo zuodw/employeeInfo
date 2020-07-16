@@ -1,8 +1,9 @@
 import json
 import random
 import string
+import os
 
-from flask import request, jsonify
+from flask import request, jsonify, send_from_directory
 from flask_mail import Message
 
 from app import app
@@ -110,3 +111,8 @@ def GetPersonalInfo():
             'birthday': employee.birthday
         }
     })
+
+
+@app.route('/api/download', methods=['GET', 'POST'])
+def Download():
+    return send_from_directory(os.path.join(os.getcwd(), "static/download"), filename="GetComputerInfo.py", as_attachment=True)

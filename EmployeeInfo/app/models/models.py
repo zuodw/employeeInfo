@@ -11,7 +11,7 @@ class Employee(Base):
     __tablename__ = 'employee'
 
     # 邮箱地址
-    mail = sa.Column(sa.String(20), primary_key=True)
+    mail = sa.Column(sa.String(50), primary_key=True)
 
     # 姓名
     name = sa.Column(sa.String(20), nullable=True)
@@ -69,10 +69,32 @@ class VerifyInfo(Base):
     __tablename__ = 'verifyinfo'
 
     # mail
-    mail = sa.Column(sa.String(20), primary_key=True)
+    mail = sa.Column(sa.String(50), primary_key=True)
 
     # verifyCode
     verifyCode = sa.Column(sa.String(20), nullable=False)
+
+
+class ComputerInfo(Base):
+    __tablename__ = 'computerinfo'
+
+    # 电脑编号
+    pcNum = sa.Column(sa.String(20), primary_key=True)
+
+    # CPU
+    cpu = sa.Column(sa.String(100), nullable=True)
+
+    # 内存
+    memory = sa.Column(sa.String(100), nullable=True)
+
+    # 硬盘
+    disk = sa.Column(sa.String(100), nullable=True)
+
+    # ip地址
+    ip = sa.Column(sa.String(20), nullable=True)
+
+    # mac地址
+    mac = sa.Column(sa.String(20), nullable=True)
 
 
 if __name__ == "__main__":

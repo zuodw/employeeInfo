@@ -8,5 +8,5 @@ setup(
     license='',
     author='zuodw',
     author_email='',
-    description='', install_requires=['flask', 'sqlalchemy']
+    description='', install_requires=['flask', 'sqlalchemy', 'wmi']
 )
