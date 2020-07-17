@@ -81,6 +81,27 @@ export default {
   },
   created: function () {
     this.formData.mail = sessionStorage.getItem('userMail')
+    this.$axios
+      .get('/api/GetEmployeeInfoByMail', {
+        params: {
+          'mail': sessionStorage.getItem('userMail')
+        }
+      })
+      .then(response => {
+        if (response.data.errCode === '0') {
+          this.formData.name = response.data.params.name
+          this.formData.sex = response.data.params.sex
+          this.formData.nation = response.data.params.nation
+          this.formData.nativePlace = response.data.params.nativePlace
+          this.formData.idCard = response.data.params.idCard
+          this.formData.passportId = response.data.params.passportId
+          this.formData.education = response.data.params.education
+          this.formData.school = response.data.params.school
+          this.formData.speciality = response.data.params.speciality
+          this.formData.department = response.data.params.department
+          this.formData.phoneNum = response.data.params.phoneNum
+        }
+      })
   },
   methods: {
     submitForm (formData) {

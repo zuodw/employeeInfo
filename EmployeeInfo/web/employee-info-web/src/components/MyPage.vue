@@ -23,9 +23,8 @@ export default {
     }
   },
   created: function () {
-    console.log(sessionStorage.getItem('userMail'))
     this.$axios
-      .get('/api/GetPersonalInfo', {
+      .get('/api/GetEmployeeInfoByMail', {
         params: {
           'mail': sessionStorage.getItem('userMail')
         }

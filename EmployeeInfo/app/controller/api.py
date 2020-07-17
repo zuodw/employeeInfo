@@ -34,9 +34,29 @@ def sendVerifyCodeMail(userMail):
 
 @app.route('/api/GetEmployeeInfoByMail')
 def GetEmployeeInfoByMail():
-    employees = dbSession.query(Employee).filter(Employee.mail == 2).one()
-    print(employees)
-    return employees.name
+    employee = EmployeeController.query_byMail(request.args.to_dict()['mail'])
+    if not employee:
+        return jsonify({'errCode': '-5', 'errMsg': '用户不存在'})
+
+    return jsonify({
+        'errCode': '0',
+        'errMsg': 'OK',
+        'params': {
+            'mail': employee.mail,
+            'name': employee.name,
+            'sex': employee.sex,
+            'nation': employee.nation,
+            'nativePlace': employee.nativePlace,
+            'idCard': employee.idCard,
+            'passportId': employee.passportId,
+            'education': employee.education,
+            'school': employee.school,
+            'speciality': employee.speciality,
+            'department': employee.department,
+            'phoneNum': employee.phoneNum,
+            'birthday': employee.birthday
+        }
+    })
 
 
 @app.route('/api/UpdateEmployeeInfo', methods=['POST'])
@@ -73,7 +93,6 @@ def ApplyVerifyCode():
     employee = EmployeeController.query_byMail(userMail)
 
     if employee:
-        print("该邮件已经注册!")
         return {'errCode': '-2', 'errMsg': '该邮件已经注册!请直接登录。'}
     else:
         if not sendVerifyCodeMail(userMail):
@@ -115,20 +134,6 @@ def SignIn():
             return jsonify({'errCode': '0', 'errMsg': 'OK'})
 
     return jsonify({'errCode': '-3', 'errMsg': '登录失败'})
-
-
-@app.route('/api/GetPersonalInfo', methods=['GET'])
-def GetPersonalInfo():
-    employee = EmployeeController.query_byMail(request.args.to_dict()['mail'])
-    return jsonify({
-        'errCode': '0',
-        'errMsg': 'OK',
-        'params': {
-            'mail': employee.mail,
-            'name': employee.name,
-            'birthday': employee.birthday
-        }
-    })
 
 
 @app.route('/api/Download', methods=['GET', 'POST'])
