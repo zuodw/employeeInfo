@@ -36,3 +36,7 @@
 
 5.  打包
     npm run build
+
+6.  手动修正部分内容
+    config\package.json:           Line 8 IP修正
+    src\router\index.js            Line 14 IP修正

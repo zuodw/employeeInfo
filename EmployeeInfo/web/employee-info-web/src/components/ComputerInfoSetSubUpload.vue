@@ -3,7 +3,7 @@
     <el-upload
       drag
       show-file-list
-      action="http://192.168.0.102:5000/api/Upload"
+      action="this.$axios.defaults.baseURL + '/api/Upload'"
       multiple
       :on-success='success'
       >
