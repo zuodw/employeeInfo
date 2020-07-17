@@ -32,9 +32,9 @@ def sendVerifyCodeMail(userMail):
     return True
 
 
-@app.route('/api/GetAllEmployeeInfo')
-def GetAllEmployeeInfo():
-    employees = dbSession.query(Employee).filter(Employee.id == 2).one()
+@app.route('/api/GetEmployeeInfoByMail')
+def GetEmployeeInfoByMail():
+    employees = dbSession.query(Employee).filter(Employee.mail == 2).one()
     print(employees)
     return employees.name
 
