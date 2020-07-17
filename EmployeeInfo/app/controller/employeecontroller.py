@@ -24,6 +24,5 @@ class EmployeeController:
 
     @staticmethod
     def query_byMail(mail):
-        print(mail)
         employee = dbSession.query(Employee).filter(Employee.mail == mail).first()
         return employee

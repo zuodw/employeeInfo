@@ -2,9 +2,11 @@ import json
 import random
 import string
 import os
+import time
 
 from flask import request, jsonify, send_from_directory
 from flask_mail import Message
+from werkzeug.utils import secure_filename
 
 from app import app
 from app import mail
@@ -14,6 +16,7 @@ from app.models.models import dbSession
 
 from app.controller.employeecontroller import EmployeeController
 from app.controller.verifycontroller import VerifyController
+from app.controller.computerinfocontroller import ComputerInfoController
 
 
 # 发送验证码邮件
@@ -30,6 +33,15 @@ def sendVerifyCodeMail(userMail):
     # 认证信息保存
     VerifyController.add(userMail, verifyCode)
     return True
+
+
+# 解析上传的PC信息文件
+def parsePCInfo(path):
+    with open(path) as fp:
+        ret = json.load(fp)
+        print(ret['ComputerInfo']['cpu'])
+        # print(ret['ComputerInfo']['cpu'], ret['cpu'], ret['memory'], ret['disk'], ret['ip'], ret['mac'])
+        # ComputerInfoController.add(ret['pcNum'], ret['cpu'], ret['memory'], ret['disk'], ret['ip'], ret['mac'])
 
 
 @app.route('/api/GetEmployeeInfoByMail')
@@ -140,6 +152,26 @@ def SignIn():
 def Download():
     return send_from_directory(os.path.join(os.getcwd(), r'static/download'), filename="GetComputerInfo.exe",
                                as_attachment=True)
+
+
+@app.route('/api/Upload', methods=['POST'])
+def Upload():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return jsonify({'errCode': '-1', 'errMsg': 'No file part'})
+
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'errCode': '-1', 'errMsg': 'No selected file'})
+
+        if file:
+            filename = secure_filename(file.filename)
+            path = os.path.join(os.getcwd(), r'static/upload', str(time.time()) + filename)
+            file.save(path)
+
+            parsePCInfo(path)
+
+        return jsonify({'errCode': '0', 'errMsg': 'OK'})
 
 
 @app.route('/api/DeleteEmployeeInfo', methods=['POST'])

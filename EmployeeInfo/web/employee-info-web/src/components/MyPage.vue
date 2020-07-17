@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-link type="primary" href="http://192.168.0.102:5000/api/Download">点击下载PC信息检测工具</el-link>
+    <el-button type="primary" @click="updateComputerInfo()">更新PC信息</el-button>
     <el-button type="primary" @click="updateMyInfo()">更新个人信息</el-button>
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="mail" label="邮箱地址" width="180"></el-table-column>
@@ -40,6 +40,9 @@ export default {
   methods: {
     updateMyInfo: function () {
       this.$router.replace('/employeeInfoUpdate')
+    },
+    updateComputerInfo: function () {
+      this.$router.replace('/computerinfoset')
     },
     deleteMyInfo: function () {
       this.$confirm('操作将永久删除您的个人信息, 是否继续?', '提示', {

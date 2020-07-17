@@ -5,6 +5,7 @@ import SignUp from '@/components/SignUp'
 import SignIn from '@/components/SignIn'
 import Index from '@/components/Index'
 import MyPage from '@/components/MyPage'
+import ComputerInfoSetMain from '@/components/ComputerInfoSetMain'
 import axios from 'axios'
 
 Vue.use(Router)
@@ -50,6 +51,14 @@ export default new Router({
       path: '/mypage',
       name: 'MyPage',
       component: MyPage,
+      meta: {
+        isLogin: true
+      }
+    },
+    {
+      path: '/computerinfoset',
+      name: 'ComputerInfoSetMain',
+      component: ComputerInfoSetMain,
       meta: {
         isLogin: true
       }

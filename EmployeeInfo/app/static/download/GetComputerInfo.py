@@ -45,7 +45,7 @@ def getComputerInfo():
 
 
 def main():
-    path = os.path.join(os.getcwd(), 'info.txt')
+    path = os.path.join(os.getcwd(), '_pcinfo.json')
 
     getComputerInfo()
 
