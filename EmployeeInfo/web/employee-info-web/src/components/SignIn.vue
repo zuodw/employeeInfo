@@ -49,7 +49,7 @@ export default {
         .then(response => {
           if (response.data.errCode === '0') {
             sessionStorage.setItem('userMail', this.formData.mail)
-            this.$router.replace('/index')
+            this.$router.replace('/')
           }
         })
     }

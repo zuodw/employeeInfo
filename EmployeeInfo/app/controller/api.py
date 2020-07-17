@@ -86,6 +86,7 @@ def ApplyVerifyCode():
 def SignUp():
     data = json.loads(request.get_data(as_text=True))
     userMail = data['params']['mail']
+    password = data['params']['pass']
     verifyCode = data['params']['verifyCode']
 
     vi = VerifyController.query_byMail(userMail)
@@ -94,12 +95,26 @@ def SignUp():
             print("Verify Success.")
 
             # 认证成功，添加用户
-            EmployeeController.add(userMail)
+            EmployeeController.add(userMail, password)
 
             # 删除认证信息
             VerifyController.delete(userMail)
 
     return jsonify({'errCode': '0', 'errMsg': 'OK'})
+
+
+@app.route('/api/SignIn', methods=['POST'])
+def SignIn():
+    data = json.loads(request.get_data(as_text=True))
+    userMail = data['params']['mail']
+    password = data['params']['password']
+
+    employee = EmployeeController.query_byMail(userMail)
+    if employee:
+        if userMail == employee.mail and password == employee.password:
+            return jsonify({'errCode': '0', 'errMsg': 'OK'})
+
+    return jsonify({'errCode': '-3', 'errMsg': '登录失败'})
 
 
 @app.route('/api/GetPersonalInfo', methods=['GET'])

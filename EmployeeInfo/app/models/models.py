@@ -13,6 +13,9 @@ class Employee(Base):
     # 邮箱地址
     mail = sa.Column(sa.String(50), primary_key=True)
 
+    # 密码
+    password = sa.Column(sa.String(50), nullable=False)
+
     # 姓名
     name = sa.Column(sa.String(20), nullable=True)
 

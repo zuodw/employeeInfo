@@ -4,9 +4,10 @@ from app.models import dbSession
 
 class EmployeeController:
     @staticmethod
-    def add(mail):
+    def add(mail, password):
         employee = Employee()
         employee.mail = mail
+        employee.password = password
         dbSession.add(employee)
         dbSession.commit()
         return employee

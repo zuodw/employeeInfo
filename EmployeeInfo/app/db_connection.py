@@ -9,6 +9,7 @@ Base.metadata.create_all(engine)
 # 增加数据
 employee = Employee()
 employee.name = '战神'
+employee.password = '123456'
 employee.sex = '男'
 employee.nation = '汉族'
 employee.nativePlace = '山东青岛'

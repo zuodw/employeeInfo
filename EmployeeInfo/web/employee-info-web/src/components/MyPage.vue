@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-link type="primary" href="http://192.168.0.106:5000/api/Download">点击下载PC信息检测工具</el-link>
+    <el-link type="primary" href="http://192.168.0.102:5000/api/Download">点击下载PC信息检测工具</el-link>
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="mail" label="邮箱地址" width="180"></el-table-column>
       <el-table-column prop="name" label="姓名" width="180"></el-table-column>
