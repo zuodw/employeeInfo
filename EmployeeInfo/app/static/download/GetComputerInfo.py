@@ -1,59 +1,96 @@
 import wmi
 import os
 import json
+from urllib import request, response
+import tkinter.messagebox
+from tkinter import *
+
 
 w = wmi.WMI()
 
-info = {}
+info = {
+    'ComputerSystem': {
+        'Manufacturer': '',
+        'Model': ''
+    },
+    'OperatingSystem': {
+        'Caption': ''
+    },
+    'Processor': '',
+    'PhysicalMemory': [],
+    'DiskDrive': [],
+    'IPAddress': {
+        'IPv4': '',
+        'IPv6': ''
+    },
+    'MACAddress': ''
+}
 
 
 def getComputerInfo():
-    info['ComputerInfo'] = {}
-    info['ComputerInfo']['memory'] = []
-    info['ComputerInfo']['disk'] = []
+    # 机器信息
+    ComputerSystem = w.Win32_ComputerSystem()[0]
+    info['ComputerSystem']['Manufacturer'] = ComputerSystem.Manufacturer
+    info['ComputerSystem']['Model'] = ComputerSystem.Model
 
-    for processor in w.Win32_Processor():
-        # CPU型号
-        info['ComputerInfo']['cpu'] = processor.Name.strip()
+    # 系统信息
+    OperatingSystem = w.Win32_OperatingSystem()[0]
+    info['OperatingSystem']['Caption'] = OperatingSystem.Caption
 
-    for memModule in w.Win32_PhysicalMemory():
-        totalMemSize = int(memModule.Capacity)
+    # CPU
+    Processor = w.Win32_Processor()[0]
+    info['Processor'] = Processor.Name.strip()   # CPU型号
 
-        info['ComputerInfo']['memory'].append({
-            'fact': memModule.Manufacturer,  # 内存厂商
-            'num': memModule.PartNumber.strip(),  # 内存型号
-            'size': totalMemSize / 1024 ** 3  # 内存大小
+    # 内存
+    for PhysicalMemory in w.Win32_PhysicalMemory():
+        info['PhysicalMemory'].append({
+            'Manufacturer': PhysicalMemory.Manufacturer,                # 内存厂商
+            'PartNumber': PhysicalMemory.PartNumber.strip(),            # 内存型号
+            'Capacity': int(PhysicalMemory.Capacity) / (1024 ** 3)      # 内存大小
         })
 
-    for disk in w.Win32_DiskDrive(InterfaceType="IDE"):
-        diskSize = int(disk.size)
-
-        info['ComputerInfo']['disk'].append({
-            'caption': disk.Caption,  # 硬盘名称
-            'size': (diskSize / 1024 ** 3)  # 硬盘大小
+    # 硬盘
+    for diskDrive in w.Win32_DiskDrive():
+        info['DiskDrive'].append({
+            'Caption': diskDrive.Caption,                       # 硬盘名称
+            'Size': round(int(diskDrive.size) / (1024 ** 3))    # 硬盘大小
         })
 
     for address in w.Win32_NetworkAdapterConfiguration(IPEnabled=True):
         # IP地址
         if '192.168.0.' in address.IPAddress[0]:
-            info['ComputerInfo']['ip'] = {}
-            info['ComputerInfo']['ip']['ip4'] = address.IPAddress[0]
-            info['ComputerInfo']['ip']['ip6'] = address.IPAddress[1]
+            info['IPAddress'] = {}
+            info['IPAddress']['IPv4'] = address.IPAddress[0]
+            info['IPAddress']['IPv6'] = address.IPAddress[1]
 
         # MAC地址
-        info['ComputerInfo']['mac'] = address.MACAddress
+        info['MACAddress'] = address.MACAddress
+
+
+def sendComputerInfoToServer():
+    # 隐藏主界面
+    tkinter.Tk().withdraw();
+
+    req = request.Request(url='http://192.168.0.106:5000/api/SetComputerInfo')
+    try:
+        response = request.urlopen(req, bytes(json.dumps(info), 'utf8')).read()
+    except Exception as e:
+        tkinter.messagebox.showinfo("糟糕", 'PC信息上传失败！')
+        return
+
+    data = json.loads(str(response, 'utf8'))
+    if data['errCode'] == '0':
+        tkinter.messagebox.showinfo("恭喜", 'PC信息上传成功！')
+    else:
+        tkinter.messagebox.showinfo("糟糕", 'PC信息上传失败！')
 
 
 def main():
-    path = os.path.join(os.getcwd(), '_pcinfo.json')
-
+    # PC信息取得
     getComputerInfo()
 
-    # 写入文件信息
-    with open(path, 'w+') as fp:
-        fp.write(json.dumps(info, indent=4))
-
-    print(path)
+    # 发送PC信息至服务器
+    sendComputerInfoToServer()
 
 
 if __name__ == '__main__':

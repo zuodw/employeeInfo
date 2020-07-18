@@ -3,7 +3,7 @@
     <el-upload
       drag
       show-file-list
-      action="this.$axios.defaults.baseURL + '/api/Upload'"
+      :action='action'
       multiple
       :on-success='success'
       >
@@ -16,6 +16,14 @@
 
 <script>
 export default {
+  data () {
+    return {
+      action: this.$axios.defaults.baseURL + '/api/Upload'
+    }
+  },
+  created () {
+    console.log(this.action)
+  },
   methods: {
     success: function (response, file, fileList) {
       this.$emit('setStepState', 3)

@@ -1,10 +1,101 @@
 import sqlalchemy as sa
+from sqlalchemy import ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+
 from app.models import engine
 from app import app
 from app.models import dbSession
 
 Base = declarative_base()
+
+
+class ComputerInfo(Base):
+    __tablename__ = 'computer'
+
+    # 电脑编号
+    pcNum = sa.Column(sa.String(20), primary_key=True)
+
+    # 电脑厂商
+    ComputerSystemManufacturer = sa.Column(sa.String(100), nullable=True)
+
+    # 电脑型号
+    ComputerSystemModel = sa.Column(sa.String(100), nullable=True)
+
+    # 电脑系统
+    OperatingSystemCaption = sa.Column(sa.String(100), nullable=True)
+
+    # 处理器(CPU)
+    Processor = sa.Column(sa.String(100), nullable=True)
+
+    # 内存厂商01
+    PhysicalMemoryManufacturer01 = sa.Column(sa.String(100), nullable=True)
+
+    # 内存型号01
+    PhysicalMemoryPartNumber01 = sa.Column(sa.String(100), nullable=True)
+
+    # 内存大小01
+    PhysicalMemoryCapacity01 = sa.Column(sa.String(10), nullable=True)
+
+    # 内存厂商02
+    PhysicalMemoryManufacturer02 = sa.Column(sa.String(100), nullable=True)
+
+    # 内存型号02
+    PhysicalMemoryPartNumber02 = sa.Column(sa.String(100), nullable=True)
+
+    # 内存大小02
+    PhysicalMemoryCapacity02 = sa.Column(sa.String(10), nullable=True)
+
+    # 内存厂商03
+    PhysicalMemoryManufacturer03 = sa.Column(sa.String(100), nullable=True)
+
+    # 内存型号03
+    PhysicalMemoryPartNumber03 = sa.Column(sa.String(100), nullable=True)
+
+    # 内存大小03
+    PhysicalMemoryCapacity03 = sa.Column(sa.String(10), nullable=True)
+
+    # 内存厂商04
+    PhysicalMemoryManufacturer04 = sa.Column(sa.String(100), nullable=True)
+
+    # 内存型号04
+    PhysicalMemoryPartNumber04 = sa.Column(sa.String(100), nullable=True)
+
+    # 内存大小04
+    PhysicalMemoryCapacity04 = sa.Column(sa.String(10), nullable=True)
+
+    # 硬盘名称01
+    DiskDriveCaption01 = sa.Column(sa.String(100), nullable=True)
+
+    # 硬盘大小01
+    DiskDriveSize01 = sa.Column(sa.String(10), nullable=True)
+
+    # 硬盘名称02
+    DiskDriveCaption02 = sa.Column(sa.String(100), nullable=True)
+
+    # 硬盘大小02
+    DiskDriveSize02 = sa.Column(sa.String(10), nullable=True)
+
+    # 硬盘名称03
+    DiskDriveCaption03 = sa.Column(sa.String(100), nullable=True)
+
+    # 硬盘大小03
+    DiskDriveSize03 = sa.Column(sa.String(10), nullable=True)
+
+    # 硬盘名称04
+    DiskDriveCaption04 = sa.Column(sa.String(100), nullable=True)
+
+    # 硬盘大小04
+    DiskDriveSize04 = sa.Column(sa.String(10), nullable=True)
+
+    # ipv4地址
+    IPv4Address = sa.Column(sa.String(20), nullable=True)
+
+    # ipv6地址
+    IPv6Address = sa.Column(sa.String(30), nullable=True)
+
+    # MAC地址
+    MACAddress = sa.Column(sa.String(20), nullable=True)
 
 
 class Employee(Base):
@@ -63,6 +154,8 @@ class Employee(Base):
 
     # 电脑编号
     pcNum = sa.Column(sa.String(20), nullable=True)
+    # MACAddress = sa.Column(sa.String(20), ForeignKey('computer.MACAddress'))
+    # computer = relationship("ComputerInfo", backref="employee_of_computer")
 
     # 备注
     comments = sa.Column(sa.String(500), nullable=True)
@@ -76,28 +169,6 @@ class VerifyInfo(Base):
 
     # verifyCode
     verifyCode = sa.Column(sa.String(20), nullable=False)
-
-
-class ComputerInfo(Base):
-    __tablename__ = 'computerinfo'
-
-    # 电脑编号
-    pcNum = sa.Column(sa.String(20), primary_key=True)
-
-    # CPU
-    cpu = sa.Column(sa.String(100), nullable=True)
-
-    # 内存
-    memory = sa.Column(sa.String(100), nullable=True)
-
-    # 硬盘
-    disk = sa.Column(sa.String(100), nullable=True)
-
-    # ip地址
-    ip = sa.Column(sa.String(20), nullable=True)
-
-    # mac地址
-    mac = sa.Column(sa.String(20), nullable=True)
 
 
 if __name__ == "__main__":

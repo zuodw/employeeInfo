@@ -7,14 +7,14 @@
     </el-steps>
 
     <ComputerInfoSetSubDownloadVue v-on:setStepState="setStepState" v-if='stepState === 1'></ComputerInfoSetSubDownloadVue>
-    <ComputerInfoSetSubUploadVue v-on:setStepState="setStepState" v-if='stepState === 2'></ComputerInfoSetSubUploadVue>
+    <ComputerInfoSetSubBindVue v-on:setStepState="setStepState" v-if='stepState === 2'></ComputerInfoSetSubBindVue>
     <ComputerInfoSetSubResultVue v-if='stepState === 3'></ComputerInfoSetSubResultVue>
   </div>
 </template>
 
 <script>
 import ComputerInfoSetSubDownload from '@/components/ComputerInfoSetSubDownload.vue'
-import ComputerInfoSetSubUpload from '@/components/ComputerInfoSetSubUpload.vue'
+import ComputerInfoSetSubBind from '@/components/ComputerInfoSetSubBind.vue'
 import ComputerInfoSetSubResult from '@/components/ComputerInfoSetSubResult.vue'
 
 export default {
@@ -25,7 +25,7 @@ export default {
   },
   components: {
     'ComputerInfoSetSubDownloadVue': ComputerInfoSetSubDownload,
-    'ComputerInfoSetSubUploadVue': ComputerInfoSetSubUpload,
+    'ComputerInfoSetSubBindVue': ComputerInfoSetSubBind,
     'ComputerInfoSetSubResultVue': ComputerInfoSetSubResult
   },
   methods: {

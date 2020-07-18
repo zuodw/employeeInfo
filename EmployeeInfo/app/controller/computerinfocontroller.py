@@ -4,14 +4,17 @@ from app.models import dbSession
 
 class ComputerInfoController:
     @staticmethod
-    def add(pcNum, cpu, memory, disk, ip, mac):
-        computer = ComputerInfo()
-        computer.pcNum = pcNum
-        computer.cpu = cpu
-        computer.memory = memory
-        computer.disk = disk
-        computer.ip = ip
-        computer.mac = mac
+    def query_byMac(mac):
+        computerInfo = dbSession.query(ComputerInfo).filter(ComputerInfo.MACAddress == mac).first()
+        if not computerInfo:
+            return None
+        else:
+            return computerInfo
 
-        dbSession.add(computer)
-        dbSession.commit()
+    @staticmethod
+    def query_byIPv4(ipv4):
+        computerInfo = dbSession.query(ComputerInfo).filter(ComputerInfo.IPv4Address == ipv4).first()
+        if not computerInfo:
+            return None
+        else:
+            return computerInfo

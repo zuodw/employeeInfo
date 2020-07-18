@@ -12,6 +12,7 @@ from app import app
 from app import mail
 from app.models.models import Employee
 from app.models.models import VerifyInfo
+from app.models.models import ComputerInfo
 from app.models.models import dbSession
 
 from app.controller.employeecontroller import EmployeeController
@@ -169,8 +170,6 @@ def Upload():
             path = os.path.join(os.getcwd(), r'static/upload', str(time.time()) + filename)
             file.save(path)
 
-            parsePCInfo(path)
-
         return jsonify({'errCode': '0', 'errMsg': 'OK'})
 
 
@@ -181,5 +180,61 @@ def DeleteEmployeeInfo():
     employee = EmployeeController.query_byMail(userMail)
     if employee:
         EmployeeController.delete(employee)
+
+    return jsonify({'errCode': '0', 'errMsg': 'OK'})
+
+
+@app.route('/api/SetComputerInfo', methods=['POST'])
+def SetComputerInfo():
+    data = json.loads(request.get_data(as_text=True))
+    print(data)
+    computer = ComputerInfoController.query_byMac(data['MACAddress'])
+    if not computer:
+        computer = ComputerInfo()
+    computer.pcNum = 'SINKA106'  # TODO
+    computer.ComputerSystemManufacturer = data['ComputerSystem']['Manufacturer']
+    computer.ComputerSystemModel = data['ComputerSystem']['Model']
+    computer.OperatingSystemCaption = data['OperatingSystem']['Caption']
+    computer.Processor = data['Processor']
+    computer.PhysicalMemoryManufacturer01 = data['PhysicalMemory'][0]['Manufacturer']
+    computer.PhysicalMemoryPartNumber01 = data['PhysicalMemory'][0]['PartNumber']
+    computer.PhysicalMemoryCapacity01 = data['PhysicalMemory'][0]['Capacity']
+    computer.PhysicalMemoryManufacturer02 = data['PhysicalMemory'][1]['Manufacturer'] if len(
+        data['PhysicalMemory']) > 1 else ''
+    computer.PhysicalMemoryPartNumber02 = data['PhysicalMemory'][1]['PartNumber'] if len(
+        data['PhysicalMemory']) > 1 else ''
+    computer.PhysicalMemoryCapacity02 = data['PhysicalMemory'][1]['Capacity'] if len(data['PhysicalMemory']) > 1 else ''
+    computer.PhysicalMemoryManufacturer03 = data['PhysicalMemory'][2]['Manufacturer'] if len(
+        data['PhysicalMemory']) > 2 else ''
+    computer.PhysicalMemoryPartNumber03 = data['PhysicalMemory'][2]['PartNumber'] if len(
+        data['PhysicalMemory']) > 2 else ''
+    computer.PhysicalMemoryCapacity03 = data['PhysicalMemory'][2]['Capacity'] if len(data['PhysicalMemory']) > 2 else ''
+    computer.PhysicalMemoryManufacturer04 = data['PhysicalMemory'][3]['Manufacturer'] if len(
+        data['PhysicalMemory']) > 3 else ''
+    computer.PhysicalMemoryPartNumber04 = data['PhysicalMemory'][3]['PartNumber'] if len(
+        data['PhysicalMemory']) > 3 else ''
+    computer.PhysicalMemoryCapacity04 = data['PhysicalMemory'][3]['Capacity'] if len(data['PhysicalMemory']) > 3 else ''
+    computer.DiskDriveCaption01 = data['DiskDrive'][0]['Caption']
+    computer.DiskDriveSize01 = data['DiskDrive'][0]['Size']
+    computer.DiskDriveCaption02 = data['DiskDrive'][1]['Caption'] if len(data['PhysicalMemory']) > 1 else ''
+    computer.DiskDriveSize02 = data['DiskDrive'][1]['Size'] if len(data['PhysicalMemory']) > 1 else ''
+    computer.DiskDriveCaption03 = data['DiskDrive'][2]['Caption'] if len(data['PhysicalMemory']) > 2 else ''
+    computer.DiskDriveSize03 = data['DiskDrive'][2]['Size'] if len(data['PhysicalMemory']) > 2 else ''
+    computer.DiskDriveCaption04 = data['DiskDrive'][3]['Caption'] if len(data['PhysicalMemory']) > 3 else ''
+    computer.DiskDriveSize04 = data['DiskDrive'][3]['Size'] if len(data['PhysicalMemory']) > 3 else ''
+    computer.IPv4Address = data['IPAddress']['IPv4']
+    computer.IPv6Address = data['IPAddress']['IPv6']
+    computer.MACAddress = data['MACAddress']
+
+    dbSession.add(computer)
+    dbSession.commit()
+
+    return jsonify({'errCode': '0', 'errMsg': 'OK'})
+
+
+@app.route('/api/BindComputerInfo', methods=['POST'])
+def BindComputerInfo():
+    computer = ComputerInfoController.query_byIPv4(request.remote_addr)
+    print(computer)
 
     return jsonify({'errCode': '0', 'errMsg': 'OK'})
