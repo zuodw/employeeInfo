@@ -5,10 +5,10 @@
       <el-main>
         <el-form :label-position="labelPosition" label-width="80px" :model="formData" :rules="rules" ref="ruleForm">
           <el-form-item label="邮件地址" prop="mail">
-            <el-input v-model="formData.mail"></el-input>
+            <el-input placeholder="请输入邮件地址" v-model="formData.mail"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
-            <el-input v-model="formData.password"></el-input>
+            <el-input placeholder="请输入密码" show-password v-model="formData.password"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('formData')">提交</el-button>

@@ -22,7 +22,7 @@
           <el-form-item label="手机号码">
             <el-input v-model="formData.phoneNum"></el-input>
           </el-form-item>
-          <el-form-item label="身份证号">
+          <el-form-item label="身份证号" prop='idCard'>
             <el-input v-model="formData.idCard"></el-input>
           </el-form-item>
           <el-form-item label="护照ID">
@@ -53,9 +53,18 @@
 </template>
 
 <script>
+import rules from '@/assets/rules'
+
 export default {
   name: 'EmployeeInfoUpdate',
   data () {
+    var checkIdCard = (rule, value, callback) => {
+      if (rules.idCard(value) === false) {
+        callback(new Error('身份证信息错误'))
+      } else {
+        callback()
+      }
+    }
     return {
       labelPosition: 'right',
       formData: {
@@ -75,6 +84,9 @@ export default {
       rules: {
         name: [
           {required: true, message: '请输入您的姓名', trigger: 'blur'}
+        ],
+        idCard: [
+          {required: true, validator: checkIdCard, trigger: 'blur'}
         ]
       }
     }

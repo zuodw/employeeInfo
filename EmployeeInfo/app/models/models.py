@@ -13,8 +13,11 @@ Base = declarative_base()
 class ComputerInfo(Base):
     __tablename__ = 'computer'
 
+    # MAC地址(主键)
+    MACAddress = sa.Column(sa.String(20), primary_key=True, nullable=True)
+
     # 电脑编号
-    pcNum = sa.Column(sa.String(20), primary_key=True)
+    pcNum = sa.Column(sa.String(20), nullable=True)
 
     # 电脑厂商
     ComputerSystemManufacturer = sa.Column(sa.String(100), nullable=True)
@@ -94,15 +97,15 @@ class ComputerInfo(Base):
     # ipv6地址
     IPv6Address = sa.Column(sa.String(30), nullable=True)
 
-    # MAC地址
-    MACAddress = sa.Column(sa.String(20), nullable=True)
-
 
 class Employee(Base):
     __tablename__ = 'employee'
 
+    # 主键
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True, nullable=False)
+
     # 邮箱地址
-    mail = sa.Column(sa.String(50), primary_key=True)
+    mail = sa.Column(sa.String(50), nullable=False)
 
     # 密码
     password = sa.Column(sa.String(50), nullable=False)
@@ -153,9 +156,8 @@ class Employee(Base):
     accessCard = sa.Column(sa.String(20), nullable=True)
 
     # 电脑编号
-    pcNum = sa.Column(sa.String(20), nullable=True)
-    # MACAddress = sa.Column(sa.String(20), ForeignKey('computer.MACAddress'))
-    # computer = relationship("ComputerInfo", backref="employee_of_computer")
+    MACAddress = sa.Column(sa.String(20), ForeignKey('computer.MACAddress'))
+    computer = relationship("ComputerInfo", backref="computer_of_employee")
 
     # 备注
     comments = sa.Column(sa.String(500), nullable=True)
@@ -163,6 +165,9 @@ class Employee(Base):
 
 class VerifyInfo(Base):
     __tablename__ = 'verifyinfo'
+
+    # 主键
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True, nullable=False)
 
     # mail
     mail = sa.Column(sa.String(50), primary_key=True)

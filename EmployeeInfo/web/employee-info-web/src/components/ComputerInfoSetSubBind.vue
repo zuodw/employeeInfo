@@ -13,13 +13,17 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-          this.$axios
-            .post('/api/BindComputerInfo')
-            .then(response => {
-              if (response.data.errCode === '0') {
-                this.$emit('setStepState', 3)
-              }
-            })
+        this.$axios
+          .post('/api/BindComputerInfo', {
+            params: {
+              'mail': sessionStorage.getItem('userMail')
+            }
+          })
+          .then(response => {
+            if (response.data.errCode === '0') {
+              this.$emit('setStepState', 3)
+            }
+          })
       }).catch(() => {
         this.$message({
           type: 'info',

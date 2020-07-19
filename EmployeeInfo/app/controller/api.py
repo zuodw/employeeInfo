@@ -234,7 +234,13 @@ def SetComputerInfo():
 
 @app.route('/api/BindComputerInfo', methods=['POST'])
 def BindComputerInfo():
+    data = json.loads(request.get_data(as_text=True))
+    userMail = data['params']['mail']
+
     computer = ComputerInfoController.query_byIPv4(request.remote_addr)
-    print(computer)
+
+    employee = EmployeeController.query_byMail(userMail)
+    employee.MACAddress = computer.MACAddress
+    EmployeeController.update(employee)
 
     return jsonify({'errCode': '0', 'errMsg': 'OK'})
