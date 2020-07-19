@@ -140,7 +140,7 @@ def SignIn():
 
 @app.route('/api/Download', methods=['GET', 'POST'])
 def Download():
-    return send_from_directory(os.path.join(os.getcwd(), r'static/download'), filename="GetComputerInfo.exe",
+    return send_from_directory(os.path.join(os.getcwd(), r'static/download'), filename="PCInfoDetectTool.exe",
                                as_attachment=True)
 
 
