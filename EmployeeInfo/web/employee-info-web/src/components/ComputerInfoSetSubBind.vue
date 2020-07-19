@@ -1,7 +1,13 @@
 <template>
-  <div style="text-align:center">
-    <el-button type="primary" @click="bindComputerInfo()">点击绑定PC信息</el-button>
-  </div>
+  <center>
+    <el-card class="box-card" style="text-align:left">
+      STEP1.  请确保您已经成功执行PC信息检测工具。 </br>
+      STEP2.  点击下方按钮，您当前账户将与上传成功的PC信息绑定。
+    </el-card>
+    <el-card class="box-card" >
+      <el-button type="text" @click="bindComputerInfo()">点击绑定PC信息</el-button>
+    </el-card>
+  </center>
 </template>
 
 <script>
@@ -22,15 +28,26 @@ export default {
           .then(response => {
             if (response.data.errCode === '0') {
               this.$emit('setStepState', 3)
+            } else {
+              this.$message({
+                type: 'error',
+                message: 'PC信息绑定失败，请重试。'
+              })
             }
           })
       }).catch(() => {
         this.$message({
           type: 'info',
-          message: '已取消删除'
+          message: '已取消绑定'
         })
       })
     }
   }
 }
 </script>
+
+<style>
+.box-card {
+  width: 600px;
+}
+</style>

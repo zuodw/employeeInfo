@@ -36,15 +36,6 @@ def sendVerifyCodeMail(userMail):
     return True
 
 
-# 解析上传的PC信息文件
-def parsePCInfo(path):
-    with open(path) as fp:
-        ret = json.load(fp)
-        print(ret['ComputerInfo']['cpu'])
-        # print(ret['ComputerInfo']['cpu'], ret['cpu'], ret['memory'], ret['disk'], ret['ip'], ret['mac'])
-        # ComputerInfoController.add(ret['pcNum'], ret['cpu'], ret['memory'], ret['disk'], ret['ip'], ret['mac'])
-
-
 @app.route('/api/GetEmployeeInfoByMail')
 def GetEmployeeInfoByMail():
     employee = EmployeeController.query_byMail(request.args.to_dict()['mail'])
@@ -124,8 +115,6 @@ def SignUp():
     vi = VerifyController.query_byMail(userMail)
     if vi:
         if userMail == vi.mail and verifyCode == vi.verifyCode:
-            print("Verify Success.")
-
             # 认证成功，添加用户
             EmployeeController.add(userMail, password)
 
@@ -187,7 +176,6 @@ def DeleteEmployeeInfo():
 @app.route('/api/SetComputerInfo', methods=['POST'])
 def SetComputerInfo():
     data = json.loads(request.get_data(as_text=True))
-    print(data)
     computer = ComputerInfoController.query_byMac(data['MACAddress'])
     if not computer:
         computer = ComputerInfo()
@@ -239,7 +227,13 @@ def BindComputerInfo():
 
     computer = ComputerInfoController.query_byIPv4(request.remote_addr)
 
+    if not userMail:
+        return jsonify({'errCode': '-1', 'errMsg': 'Mail Not Found.'})
+
     employee = EmployeeController.query_byMail(userMail)
+    if not employee:
+        return jsonify({'errCode': '-2', 'errMsg': 'Employee Not Found.'})
+
     employee.MACAddress = computer.MACAddress
     EmployeeController.update(employee)
 

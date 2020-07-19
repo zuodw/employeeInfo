@@ -11,7 +11,10 @@
         </template>
       </el-header>
       <el-main>
-        <template v-if='userMail'>
+        <template v-if='userName'>
+          欢迎你，{{ this.userName }}。
+        </template>
+        <template v-else-if='userMail'>
           欢迎你，{{ this.userMail }}。
         </template>
         <template v-else>
@@ -31,6 +34,7 @@ export default {
     return {
       labelPosition: 'right',
       userMail: '',
+      userName: '',
       formData: {
         mail: 'test@qq.com',
         verifyCode: '123456'
@@ -46,9 +50,20 @@ export default {
     }
   },
   created: function () {
-    console.log('Index Created.')
-    console.log(sessionStorage.getItem('userMail'))
     this.userMail = sessionStorage.getItem('userMail')
+
+    this.$axios
+      .get('/api/GetEmployeeInfoByMail', {
+        params: {
+          'mail': sessionStorage.getItem('userMail')
+        }
+      })
+      .then(response => {
+        if (response.data.errCode === '0') {
+          this.userName = response.data.params.name
+        }
+      })
+
   },
   methods: {
     signUp () {

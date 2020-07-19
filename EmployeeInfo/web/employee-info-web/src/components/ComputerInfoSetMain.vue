@@ -2,7 +2,7 @@
   <div style="text-align:center">
     <el-steps :space="600" :active=stepState finish-status="success" align-center>
       <el-step title="下载PC信息检测工具"></el-step>
-      <el-step title="上传PC检测结果"></el-step>
+      <el-step title="绑定PC信息"></el-step>
       <el-step title="恭喜你，成功啦"></el-step>
     </el-steps>
 
