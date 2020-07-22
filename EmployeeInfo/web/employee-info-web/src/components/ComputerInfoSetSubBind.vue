@@ -1,8 +1,8 @@
 <template>
   <center>
     <el-card class="box-card" style="text-align:left">
-      STEP1.  请确保您已经成功执行PC信息检测工具。 </br>
-      STEP2.  点击下方按钮，您当前账户将与上传成功的PC信息绑定。
+      STEP1.  请确保您已经成功执行PC信息检测工具。 <br/>
+      STEP2.  点击下方按钮,您当前账户将与上传成功的PC信息绑定。
     </el-card>
     <el-card class="box-card" >
       <el-button type="text" @click="bindComputerInfo()">点击绑定PC信息</el-button>

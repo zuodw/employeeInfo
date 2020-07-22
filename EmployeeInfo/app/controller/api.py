@@ -38,6 +38,9 @@ def sendVerifyCodeMail(userMail):
 
 @app.route('/api/GetEmployeeInfoByMail')
 def GetEmployeeInfoByMail():
+    if 'mail' not in request.args.to_dict():
+        return jsonify({'errCode': '-6', 'errMsg': 'mail未指定'})
+
     employee = EmployeeController.query_byMail(request.args.to_dict()['mail'])
     if not employee:
         return jsonify({'errCode': '-5', 'errMsg': '用户不存在'})
@@ -204,12 +207,12 @@ def SetComputerInfo():
     computer.PhysicalMemoryCapacity04 = data['PhysicalMemory'][3]['Capacity'] if len(data['PhysicalMemory']) > 3 else ''
     computer.DiskDriveCaption01 = data['DiskDrive'][0]['Caption']
     computer.DiskDriveSize01 = data['DiskDrive'][0]['Size']
-    computer.DiskDriveCaption02 = data['DiskDrive'][1]['Caption'] if len(data['PhysicalMemory']) > 1 else ''
-    computer.DiskDriveSize02 = data['DiskDrive'][1]['Size'] if len(data['PhysicalMemory']) > 1 else ''
-    computer.DiskDriveCaption03 = data['DiskDrive'][2]['Caption'] if len(data['PhysicalMemory']) > 2 else ''
-    computer.DiskDriveSize03 = data['DiskDrive'][2]['Size'] if len(data['PhysicalMemory']) > 2 else ''
-    computer.DiskDriveCaption04 = data['DiskDrive'][3]['Caption'] if len(data['PhysicalMemory']) > 3 else ''
-    computer.DiskDriveSize04 = data['DiskDrive'][3]['Size'] if len(data['PhysicalMemory']) > 3 else ''
+    computer.DiskDriveCaption02 = data['DiskDrive'][1]['Caption'] if len(data['DiskDrive']) > 1 else ''
+    computer.DiskDriveSize02 = data['DiskDrive'][1]['Size'] if len(data['DiskDrive']) > 1 else ''
+    computer.DiskDriveCaption03 = data['DiskDrive'][2]['Caption'] if len(data['DiskDrive']) > 2 else ''
+    computer.DiskDriveSize03 = data['DiskDrive'][2]['Size'] if len(data['DiskDrive']) > 2 else ''
+    computer.DiskDriveCaption04 = data['DiskDrive'][3]['Caption'] if len(data['DiskDrive']) > 3 else ''
+    computer.DiskDriveSize04 = data['DiskDrive'][3]['Size'] if len(data['DiskDrive']) > 3 else ''
     computer.IPv4Address = data['IPAddress']['IPv4']
     computer.IPv6Address = data['IPAddress']['IPv6']
     computer.MACAddress = data['MACAddress']

@@ -63,7 +63,6 @@ export default {
           this.userName = response.data.params.name
         }
       })
-
   },
   methods: {
     signUp () {
