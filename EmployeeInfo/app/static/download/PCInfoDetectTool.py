@@ -16,7 +16,11 @@ info = {
     'OperatingSystem': {
         'Caption': ''
     },
-    'Processor': '',
+    'Processor':
+    {
+        'SystemName': '',
+        'Name': ''
+    },
     'PhysicalMemory': [],
     'DiskDrive': [],
     'IPAddress': {
@@ -39,7 +43,8 @@ def getComputerInfo():
 
     # CPU
     Processor = w.Win32_Processor()[0]
-    info['Processor'] = Processor.Name.strip()   # CPU型号
+    info['Processor']['SystemName'] = Processor.SystemName.strip()   # 系统名
+    info['Processor']['Name'] = Processor.Name.strip()   # CPU型号
 
     # 内存
     for PhysicalMemory in w.Win32_PhysicalMemory():
@@ -66,12 +71,14 @@ def getComputerInfo():
         # MAC地址
         info['MACAddress'] = address.MACAddress
 
+    print(info)
+
 
 def sendComputerInfoToServer():
     # 隐藏主界面
     tkinter.Tk().withdraw();
 
-    req = request.Request(url='http://192.168.0.106:5000/api/SetComputerInfo')
+    req = request.Request(url='http://192.168.0.102:5000/api/SetComputerInfo')
     try:
         response = request.urlopen(req, bytes(json.dumps(info), 'utf8')).read()
     except Exception as e:

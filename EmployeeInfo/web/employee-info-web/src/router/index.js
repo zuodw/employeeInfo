@@ -11,7 +11,7 @@ import axios from 'axios'
 Vue.use(Router)
 Vue.prototype.$axios = axios
 
-axios.defaults.baseURL = 'http://192.168.0.106:5000/'
+axios.defaults.baseURL = 'http://192.168.0.102:5000/'
 
 export default new Router({
   routes: [

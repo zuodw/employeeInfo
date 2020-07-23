@@ -51,18 +51,19 @@ export default {
   },
   created: function () {
     this.userMail = sessionStorage.getItem('userMail')
-
-    this.$axios
-      .get('/api/GetEmployeeInfoByMail', {
-        params: {
-          'mail': sessionStorage.getItem('userMail')
-        }
-      })
-      .then(response => {
-        if (response.data.errCode === '0') {
-          this.userName = response.data.params.name
-        }
-      })
+    if (sessionStorage.getItem('userMail')) {
+      this.$axios
+        .get('/api/GetEmployeeInfoByMail', {
+          params: {
+            'mail': sessionStorage.getItem('userMail')
+          }
+        })
+        .then(response => {
+          if (response.data.errCode === '0') {
+            this.userName = response.data.params.name
+          }
+        })
+    }
   },
   methods: {
     signUp () {

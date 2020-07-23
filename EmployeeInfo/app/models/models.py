@@ -16,9 +16,6 @@ class ComputerInfo(Base):
     # MAC地址(主键)
     MACAddress = sa.Column(sa.String(20), primary_key=True, nullable=True)
 
-    # 电脑编号
-    pcNum = sa.Column(sa.String(20), nullable=True)
-
     # 电脑厂商
     ComputerSystemManufacturer = sa.Column(sa.String(100), nullable=True)
 
@@ -28,8 +25,11 @@ class ComputerInfo(Base):
     # 电脑系统
     OperatingSystemCaption = sa.Column(sa.String(100), nullable=True)
 
-    # 处理器(CPU)
-    Processor = sa.Column(sa.String(100), nullable=True)
+    # 处理器(CPU)名
+    ProcessorSystemName = sa.Column(sa.String(100), nullable=True)
+
+    # 系统名(例:PC108)
+    ProcessorName = sa.Column(sa.String(100), nullable=True)
 
     # 内存厂商01
     PhysicalMemoryManufacturer01 = sa.Column(sa.String(100), nullable=True)

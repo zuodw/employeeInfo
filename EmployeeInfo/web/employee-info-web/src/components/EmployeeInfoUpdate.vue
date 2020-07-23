@@ -4,7 +4,7 @@
       <el-header class="el-header">欢迎来到王者荣耀</el-header>
       <el-main>
         <el-form :label-position="labelPosition" label-width="80px" :model="formData" :rules="rules" ref="ruleForm">
-          <el-form-item label="姓名" prop="name">
+          <el-form-item label="姓名" prop="nameRule">
             <el-input v-model="formData.name"></el-input>
           </el-form-item>
           <el-form-item label="性别">
@@ -13,28 +13,33 @@
               <el-radio border label="女"></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="民族">
+          <el-form-item label="民族" prop="nationRule">
             <el-input v-model="formData.nation"></el-input>
           </el-form-item>
-          <el-form-item label="籍贯">
+          <el-form-item label="籍贯" prop="nativePlaceRule">
             <el-input v-model="formData.nativePlace"></el-input>
           </el-form-item>
-          <el-form-item label="手机号码">
+          <el-form-item label="手机号码" prop="phoneNumRule">
             <el-input v-model="formData.phoneNum"></el-input>
           </el-form-item>
-          <el-form-item label="身份证号" prop='idCard'>
+          <el-form-item label="身份证号" prop='idCardRule'>
             <el-input v-model="formData.idCard"></el-input>
           </el-form-item>
           <el-form-item label="护照ID">
             <el-input v-model="formData.passportId"></el-input>
           </el-form-item>
           <el-form-item label="学历">
-            <el-input v-model="formData.education"></el-input>
+            <el-radio-group v-model="formData.education" size="medium" style="align:left">
+              <el-radio border label="专科"></el-radio>
+              <el-radio border label="本科"></el-radio>
+              <el-radio border label="研究生"></el-radio>
+              <el-radio border label="博士"></el-radio>
+            </el-radio-group>
           </el-form-item>
-          <el-form-item label="毕业院校">
+          <el-form-item label="毕业院校" prop="schoolRule">
             <el-input v-model="formData.school"></el-input>
           </el-form-item>
-          <el-form-item label="专业">
+          <el-form-item label="专业" prop="specialityRule">
             <el-input v-model="formData.speciality"></el-input>
           </el-form-item>
           <el-form-item label="部门">
@@ -69,23 +74,38 @@ export default {
       labelPosition: 'right',
       formData: {
         name: '',
-        sex: '',
+        sex: '男',
         nation: '',
         nativePlace: '',
+        phoneNum: '',
         idCard: '',
         passportId: '',
         education: '',
         school: '',
         speciality: '',
         department: '',
-        phoneNum: '',
         mail: ''
       },
       rules: {
-        name: [
-          {required: true, message: '请输入您的姓名', trigger: 'blur'}
+        nameRule: [
+          { required: true, message: '请输入您的姓名', trigger: 'change' }
         ],
-        idCard: [
+        nationRule: [
+          {required: true, message: '请输入您的民族', trigger: 'blur'}
+        ],
+        nativePlaceRule: [
+          {required: true, message: '请输入您的籍贯', trigger: 'blur'}
+        ],
+        phoneNumRule: [
+          {required: true, message: '请输入您的手机号码', trigger: 'blur'}
+        ],
+        schoolRule: [
+          {required: true, message: '请输入您的毕业院校', trigger: 'blur'}
+        ],
+        specialityRule: [
+          {required: true, message: '请输入您的专业', trigger: 'blur'}
+        ],
+        idCardRule: [
           {required: true, validator: checkIdCard, trigger: 'blur'}
         ]
       }

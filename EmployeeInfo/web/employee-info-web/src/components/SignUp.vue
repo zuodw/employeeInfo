@@ -59,16 +59,16 @@ export default {
       },
       rules: {
         mail: [
-          {required: true, message: '请输入您的邮箱地址', trigger: 'blur'}
+          { required: true, message: '请输入您的邮箱地址', trigger: 'blur' }
         ],
         verifyCode: [
-          {required: true, message: '请输入验证码', trigger: 'blur'}
+          { required: true, message: '请输入验证码', trigger: 'blur' }
         ],
         pass: [
-          { validator: validatePass, trigger: 'blur' }
+          { required: true, validator: validatePass, trigger: 'blur' }
         ],
         checkPass: [
-          { validator: validatePass2, trigger: 'blur' }
+          { required: true, validator: validatePass2, trigger: 'blur' }
         ]
       }
     }

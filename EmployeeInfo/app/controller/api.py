@@ -182,11 +182,11 @@ def SetComputerInfo():
     computer = ComputerInfoController.query_byMac(data['MACAddress'])
     if not computer:
         computer = ComputerInfo()
-    computer.pcNum = 'SINKA106'  # TODO
     computer.ComputerSystemManufacturer = data['ComputerSystem']['Manufacturer']
     computer.ComputerSystemModel = data['ComputerSystem']['Model']
     computer.OperatingSystemCaption = data['OperatingSystem']['Caption']
-    computer.Processor = data['Processor']
+    computer.ProcessorSystemName = data['Processor']['SystemName']
+    computer.ProcessorName = data['Processor']['Name']
     computer.PhysicalMemoryManufacturer01 = data['PhysicalMemory'][0]['Manufacturer']
     computer.PhysicalMemoryPartNumber01 = data['PhysicalMemory'][0]['PartNumber']
     computer.PhysicalMemoryCapacity01 = data['PhysicalMemory'][0]['Capacity']
