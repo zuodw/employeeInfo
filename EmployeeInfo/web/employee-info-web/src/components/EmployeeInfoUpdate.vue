@@ -4,7 +4,7 @@
       <el-header class="el-header">欢迎来到王者荣耀</el-header>
       <el-main>
         <el-form :label-position="labelPosition" label-width="80px" :model="formData" :rules="rules" ref="ruleForm">
-          <el-form-item label="姓名" prop="nameRule">
+          <el-form-item label="姓名" prop="name">
             <el-input v-model="formData.name"></el-input>
           </el-form-item>
           <el-form-item label="性别">
@@ -13,33 +13,33 @@
               <el-radio border label="女"></el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="民族" prop="nationRule">
+          <el-form-item label="民族" prop="nation">
             <el-input v-model="formData.nation"></el-input>
           </el-form-item>
-          <el-form-item label="籍贯" prop="nativePlaceRule">
+          <el-form-item label="籍贯" prop="nativePlace">
             <el-input v-model="formData.nativePlace"></el-input>
           </el-form-item>
-          <el-form-item label="手机号码" prop="phoneNumRule">
+          <el-form-item label="手机号码" prop="phoneNum">
             <el-input v-model="formData.phoneNum"></el-input>
           </el-form-item>
-          <el-form-item label="身份证号" prop='idCardRule'>
+          <el-form-item label="身份证号" prop='idCard'>
             <el-input v-model="formData.idCard"></el-input>
           </el-form-item>
           <el-form-item label="护照ID">
             <el-input v-model="formData.passportId"></el-input>
           </el-form-item>
           <el-form-item label="学历">
-            <el-radio-group v-model="formData.education" size="medium" style="align:left">
-              <el-radio border label="专科"></el-radio>
-              <el-radio border label="本科"></el-radio>
-              <el-radio border label="研究生"></el-radio>
-              <el-radio border label="博士"></el-radio>
-            </el-radio-group>
+            <el-select v-model="formData.education" placeholder="请选择学历">
+              <el-option label="专科" value="专科"></el-option>
+              <el-option label="本科" value="本科"></el-option>
+              <el-option label="硕士" value="硕士"></el-option>
+              <el-option label="博士" value="博士"></el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="毕业院校" prop="schoolRule">
+          <el-form-item label="毕业院校" prop="school">
             <el-input v-model="formData.school"></el-input>
           </el-form-item>
-          <el-form-item label="专业" prop="specialityRule">
+          <el-form-item label="专业" prop="speciality">
             <el-input v-model="formData.speciality"></el-input>
           </el-form-item>
           <el-form-item label="部门">
@@ -74,7 +74,7 @@ export default {
       labelPosition: 'right',
       formData: {
         name: '',
-        sex: '男',
+        sex: '',
         nation: '',
         nativePlace: '',
         phoneNum: '',
@@ -87,26 +87,26 @@ export default {
         mail: ''
       },
       rules: {
-        nameRule: [
+        name: [
           { required: true, message: '请输入您的姓名', trigger: 'change' }
         ],
-        nationRule: [
-          {required: true, message: '请输入您的民族', trigger: 'blur'}
+        nation: [
+          { required: true, message: '请输入您的民族', trigger: 'blur' }
         ],
-        nativePlaceRule: [
-          {required: true, message: '请输入您的籍贯', trigger: 'blur'}
+        nativePlace: [
+          { required: true, message: '请输入您的籍贯', trigger: 'blur' }
         ],
-        phoneNumRule: [
-          {required: true, message: '请输入您的手机号码', trigger: 'blur'}
+        phoneNum: [
+          { required: true, message: '请输入您的手机号码', trigger: 'blur' }
         ],
-        schoolRule: [
-          {required: true, message: '请输入您的毕业院校', trigger: 'blur'}
+        school: [
+          { required: true, message: '请输入您的毕业院校', trigger: 'blur' }
         ],
-        specialityRule: [
-          {required: true, message: '请输入您的专业', trigger: 'blur'}
+        speciality: [
+          { required: true, message: '请输入您的专业', trigger: 'blur' }
         ],
-        idCardRule: [
-          {required: true, validator: checkIdCard, trigger: 'blur'}
+        idCard: [
+          { required: true, validator: checkIdCard, trigger: 'blur' }
         ]
       }
     }

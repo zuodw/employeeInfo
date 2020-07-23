@@ -61,7 +61,8 @@ def GetEmployeeInfoByMail():
             'speciality': employee.speciality,
             'department': employee.department,
             'phoneNum': employee.phoneNum,
-            'birthday': employee.birthday
+            'birthday': employee.birthday,
+            'MACAddress': employee.MACAddress
         }
     })
 
@@ -241,3 +242,31 @@ def BindComputerInfo():
     EmployeeController.update(employee)
 
     return jsonify({'errCode': '0', 'errMsg': 'OK'})
+
+
+@app.route('/api/GetComputerInfoByMac')
+def GetComputerInfoByMac():
+    if 'mac' not in request.args.to_dict():
+        return jsonify({'errCode': '-6', 'errMsg': 'MAC地址未指定'})
+
+    computer = ComputerInfoController.query_byMac(request.args.to_dict()['mac'])
+    if not computer:
+        return jsonify({'errCode': '-5', 'errMsg': 'PC信息不存在'})
+
+    print(type(computer.__dict__))
+
+    return jsonify({
+        'errCode': '0',
+        'errMsg': 'OK',
+        'params': {
+            'MACAddress': computer.MACAddress,
+            'ComputerSystemManufacturer': computer.ComputerSystemManufacturer,
+            'ComputerSystemModel': computer.ComputerSystemModel,
+            'OperatingSystemCaption': computer.OperatingSystemCaption,
+            'ProcessorSystemName': computer.ProcessorSystemName,
+            'ProcessorName': computer.ProcessorName,
+            'PhysicalMemoryManufacturer01': computer.PhysicalMemoryManufacturer01,
+            'PhysicalMemoryPartNumber01': computer.PhysicalMemoryPartNumber01,
+            'PhysicalMemoryCapacity01': computer.PhysicalMemoryCapacity01
+        }
+    })
