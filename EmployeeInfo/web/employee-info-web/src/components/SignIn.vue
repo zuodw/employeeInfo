@@ -3,7 +3,7 @@
     <el-container style="margin-left:auto; margin-right:auto; width: 400px; border: 1px solid #eee">
       <el-header class="el-header">欢迎来到王者荣耀</el-header>
       <el-main>
-        <el-form :label-position="labelPosition" label-width="80px" :model="formData" :rules="rules" ref="ruleForm">
+        <el-form :label-position="labelPosition" label-width="80px" :model="formData" :rules="rules" ref="formData">
           <el-form-item label="邮件地址" prop="mail">
             <el-input placeholder="请输入邮件地址" v-model="formData.mail"></el-input>
           </el-form-item>
@@ -44,14 +44,38 @@ export default {
   },
   methods: {
     submitForm (formData) {
-      this.$axios
-        .post('/api/SignIn', {params: this.formData})
-        .then(response => {
-          if (response.data.errCode === '0') {
-            sessionStorage.setItem('userMail', this.formData.mail)
-            this.$router.replace('/')
-          }
-        })
+      this.$refs[formData].validate((valid) => {
+        if (valid) {
+          this.$axios
+            .post('/api/SignIn', {params: this.formData})
+            .then(response => {
+              if (response.data.errCode === '0') {
+                sessionStorage.setItem('userMail', this.formData.mail)
+                this.$router.replace('/')
+              } else if (response.data.errCode === '-1') {
+                this.$alert('您输入的邮箱尚未注册，请点击前往注册。', '登录失败', {
+                  confirmButtonText: '前往注册',
+                  callback: action => {
+                    this.$router.replace('/signup')
+                  }
+                })
+              } else if (response.data.errCode === '-2') {
+                this.$alert('登录失败，请重试。', '登录失败', {
+                  confirmButtonText: '重试',
+                  callback: action => {
+                    this.$refs[formData].resetFields()
+                  }
+                })
+              }
+            })
+        } else {
+          this.$message({
+            message: '信息填写失败',
+            type: 'error',
+            center: true
+          })
+        }
+      })
     }
   }
 }

@@ -22,7 +22,7 @@ from app.controller.computerinfocontroller import ComputerInfoController
 
 # 发送验证码邮件
 def sendVerifyCodeMail(userMail):
-    msg = Message('验证码', sender='zuodw@qq.com', recipients=[userMail])
+    msg = Message('验证码', sender=os.getenv('MAIL_USERNAME'), recipients=[userMail])
     verifyCode = "".join(random.sample([x for x in string.ascii_letters + string.digits], 6))
     print(verifyCode)
     msg.body = '您的验证码是：' + verifyCode
@@ -61,7 +61,7 @@ def GetEmployeeInfoByMail():
             'speciality': employee.speciality,
             'department': employee.department,
             'phoneNum': employee.phoneNum,
-            'birthday': employee.birthday,
+            'birthday': str(employee.birthday),
             'MACAddress': employee.MACAddress
         }
     })
@@ -116,6 +116,10 @@ def SignUp():
     password = data['params']['pass']
     verifyCode = data['params']['verifyCode']
 
+    employee = EmployeeController.query_byMail(userMail)
+    if employee:
+        jsonify({'errCode': '-1', 'errMsg': '已注册'})
+
     vi = VerifyController.query_byMail(userMail)
     if vi:
         if userMail == vi.mail and verifyCode == vi.verifyCode:
@@ -128,6 +132,12 @@ def SignUp():
     return jsonify({'errCode': '0', 'errMsg': 'OK'})
 
 
+'''
+返回值:
+ 0: OK
+-1: 未注册
+-2: 登录失败
+'''
 @app.route('/api/SignIn', methods=['POST'])
 def SignIn():
     data = json.loads(request.get_data(as_text=True))
@@ -138,8 +148,10 @@ def SignIn():
     if employee:
         if userMail == employee.mail and password == employee.password:
             return jsonify({'errCode': '0', 'errMsg': 'OK'})
+    else:
+        return jsonify({'errCode': '-1', 'errMsg': '尚未注册'})
 
-    return jsonify({'errCode': '-3', 'errMsg': '登录失败'})
+    return jsonify({'errCode': '-2', 'errMsg': '登录失败'})
 
 
 @app.route('/api/Download', methods=['GET', 'POST'])

@@ -49,7 +49,7 @@
     </div>
   </el-card>
   <el-card shadow="always" style="margin-left: 20px" v-else>
-    <el-button style="float: right; padding: 3px 0" type="text" @click="updateMyComputerInfo()">您尚未绑定个人PC，请前往更新</el-button>
+    <el-button style="font-size: 16px" type="text" @click="updateMyComputerInfo()"> 您尚未绑定个人PC,请点击前往更新 </el-button>
   </el-card>
 </template>
 
@@ -71,11 +71,9 @@ export default {
     }
   },
   created: function () {
-    console.log(sessionStorage.getItem('mac'))
     if (sessionStorage.getItem('mac') !== null) {
       this.data.isComputerInfoBind = true
       this.data.MACAddress = sessionStorage.getItem('mac')
-      console.log(this.data.MACAddress)
       this.$axios
         .get('/api/GetComputerInfoByMac', {
           params: {
