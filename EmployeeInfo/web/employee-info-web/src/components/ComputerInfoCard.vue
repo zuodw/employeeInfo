@@ -71,32 +71,43 @@ export default {
     }
   },
   created: function () {
-    if (sessionStorage.getItem('mac') !== null) {
-      this.data.isComputerInfoBind = true
-      this.data.MACAddress = sessionStorage.getItem('mac')
-      this.$axios
-        .get('/api/GetComputerInfoByMac', {
-          params: {
-            'mac': this.data.MACAddress
+    this.$axios
+      .get('/api/GetEmployeeInfoByMail', {
+        params: {
+          'mail': sessionStorage.getItem('userMail')
+        }
+      })
+      .then(response => {
+        if (response.data.errCode === '0') {
+          if (response.data.params.MACAddress !== '') {
+            sessionStorage.setItem('mac', response.data.params.MACAddress)
+            this.data.isComputerInfoBind = true
+
+            this.$axios
+              .get('/api/GetComputerInfoByMac', {
+                params: {
+                  'mac': response.data.params.MACAddress
+                }
+              })
+              .then(response => {
+                if (response.data.errCode === '0') {
+                  this.data.ComputerSystemModel = response.data.params.ComputerSystemModel
+                  this.data.ProcessorName = response.data.params.ProcessorName
+                  this.data.IPv4Address = response.data.params.IPv4Address
+                  this.data.OperatingSystemCaption = response.data.params.OperatingSystemCaption
+                  this.data.PhysicalMemoryCapacity01 = response.data.params.PhysicalMemoryCapacity01
+                  this.data.PhysicalMemoryCapacity02 = response.data.params.PhysicalMemoryCapacity02
+                  this.data.PhysicalMemoryCapacity04 = response.data.params.PhysicalMemoryCapacity03
+                  this.data.PhysicalMemoryCapacity03 = response.data.params.PhysicalMemoryCapacity04
+                  this.data.DiskDriveSize01 = response.data.params.DiskDriveSize01
+                  this.data.DiskDriveSize02 = response.data.params.DiskDriveSize02
+                  this.data.DiskDriveSize03 = response.data.params.DiskDriveSize03
+                  this.data.DiskDriveSize04 = response.data.params.DiskDriveSize04
+                }
+              })
           }
-        })
-        .then(response => {
-          if (response.data.errCode === '0') {
-            this.data.ComputerSystemModel = response.data.params.ComputerSystemModel
-            this.data.ProcessorName = response.data.params.ProcessorName
-            this.data.IPv4Address = response.data.params.IPv4Address
-            this.data.OperatingSystemCaption = response.data.params.OperatingSystemCaption
-            this.data.PhysicalMemoryCapacity01 = response.data.params.PhysicalMemoryCapacity01
-            this.data.PhysicalMemoryCapacity02 = response.data.params.PhysicalMemoryCapacity02
-            this.data.PhysicalMemoryCapacity04 = response.data.params.PhysicalMemoryCapacity03
-            this.data.PhysicalMemoryCapacity03 = response.data.params.PhysicalMemoryCapacity04
-            this.data.DiskDriveSize01 = response.data.params.DiskDriveSize01
-            this.data.DiskDriveSize02 = response.data.params.DiskDriveSize02
-            this.data.DiskDriveSize03 = response.data.params.DiskDriveSize03
-            this.data.DiskDriveSize04 = response.data.params.DiskDriveSize04
-          }
-        })
-    }
+        }
+      })
   },
   methods: {
     updateMyComputerInfo: function () {

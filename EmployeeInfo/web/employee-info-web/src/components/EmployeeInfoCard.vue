@@ -68,10 +68,6 @@ export default {
           this.data.nativePlace = response.data.params.nativePlace
           this.data.idCard = response.data.params.idCard
           this.data.phoneNum = response.data.params.phoneNum
-
-          if (this.data.MACAddress !== '') {
-            sessionStorage.setItem('mac', this.data.MACAddress)
-          }
         }
       })
   },
