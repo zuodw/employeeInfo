@@ -1,5 +1,5 @@
 <template>
-  <el-card shadow="always" style="width:640px; margin-left: 20px">
+  <el-card shadow="always" style="margin-left: 20px">
     <div slot="header" style="text-align:left">
       <h3> 个人信息
       <el-button style="float: right; padding: 3px 0" type="text" @click="updateMyInfo()">更新</el-button>
@@ -27,10 +27,10 @@
       身份证号： {{ this.data.idCard }}
     </div>
     <div class="text item">
-      MAC地址： {{ this.data.MACAddress }}
+      手机号码： {{ this.data.phoneNum }}
     </div>
     <div class="text item">
-      ・・・・・・</br>
+      ・・・・・・<br/>
     </div>
   </el-card>
 </template>
@@ -67,9 +67,9 @@ export default {
           this.data.birthday = response.data.params.birthday
           this.data.nativePlace = response.data.params.nativePlace
           this.data.idCard = response.data.params.idCard
-          this.data.MACAddress = response.data.params.MACAddress
+          this.data.phoneNum = response.data.params.phoneNum
 
-          if (this.data.MACAddress != '') {
+          if (this.data.MACAddress !== '') {
             sessionStorage.setItem('mac', this.data.MACAddress)
           }
         }

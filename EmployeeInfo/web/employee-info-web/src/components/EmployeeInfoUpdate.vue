@@ -3,7 +3,7 @@
     <el-container style="margin-left:auto; margin-right:auto; width:60%; border: 1px solid #eee">
       <el-header class="el-header">欢迎来到王者荣耀</el-header>
       <el-main>
-        <el-form :label-position="labelPosition" label-width="80px" :model="formData" :rules="rules" ref="ruleForm">
+        <el-form :label-position="labelPosition" label-width="80px" :model="formData" :rules="rules" ref="formData">
           <el-form-item label="姓名" prop="name">
             <el-input v-model="formData.name"></el-input>
           </el-form-item>
@@ -137,18 +137,24 @@ export default {
   },
   methods: {
     submitForm (formData) {
-      this.$axios
-        .post('/api/UpdateEmployeeInfo', {params: this.formData})
-        .then(response => {
-          if (response.data.errCode === '0') {
-            this.$alert('个人信息更新完成，点击前往个人页主页。', '提交结果', {
-              confirmButtonText: '前往个人主页',
-              callback: action => {
-                this.$router.replace('/myPage')
+      this.$refs[formData].validate((valid) => {
+        if (valid) {
+          this.$axios
+            .post('/api/UpdateEmployeeInfo', {params: this.formData})
+            .then(response => {
+              if (response.data.errCode === '0') {
+                this.$alert('个人信息更新完成，点击前往个人页主页。', '提交结果', {
+                  confirmButtonText: '前往个人主页',
+                  callback: action => {
+                    this.$router.replace('/myPage')
+                  }
+                })
               }
             })
-          }
-        })
+        } else {
+          return false
+        }
+      })
     }
   }
 }

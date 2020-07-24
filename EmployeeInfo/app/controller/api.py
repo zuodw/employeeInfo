@@ -241,7 +241,13 @@ def BindComputerInfo():
     employee.MACAddress = computer.MACAddress
     EmployeeController.update(employee)
 
-    return jsonify({'errCode': '0', 'errMsg': 'OK'})
+    return jsonify({
+        'errCode': '0',
+        'errMsg': 'OK',
+        'params': {
+            'MACAddress': computer.MACAddress
+        }
+    })
 
 
 @app.route('/api/GetComputerInfoByMac')
@@ -252,8 +258,6 @@ def GetComputerInfoByMac():
     computer = ComputerInfoController.query_byMac(request.args.to_dict()['mac'])
     if not computer:
         return jsonify({'errCode': '-5', 'errMsg': 'PC信息不存在'})
-
-    print(type(computer.__dict__))
 
     return jsonify({
         'errCode': '0',
@@ -267,6 +271,24 @@ def GetComputerInfoByMac():
             'ProcessorName': computer.ProcessorName,
             'PhysicalMemoryManufacturer01': computer.PhysicalMemoryManufacturer01,
             'PhysicalMemoryPartNumber01': computer.PhysicalMemoryPartNumber01,
-            'PhysicalMemoryCapacity01': computer.PhysicalMemoryCapacity01
+            'PhysicalMemoryCapacity01': computer.PhysicalMemoryCapacity01,
+            'PhysicalMemoryManufacturer02': computer.PhysicalMemoryManufacturer02,
+            'PhysicalMemoryPartNumber02': computer.PhysicalMemoryPartNumber02,
+            'PhysicalMemoryCapacity02': computer.PhysicalMemoryCapacity02,
+            'PhysicalMemoryManufacturer03': computer.PhysicalMemoryManufacturer03,
+            'PhysicalMemoryPartNumber03': computer.PhysicalMemoryPartNumber03,
+            'PhysicalMemoryCapacity03': computer.PhysicalMemoryCapacity03,
+            'PhysicalMemoryManufacturer04': computer.PhysicalMemoryManufacturer04,
+            'PhysicalMemoryPartNumber04': computer.PhysicalMemoryPartNumber04,
+            'PhysicalMemoryCapacity04': computer.PhysicalMemoryCapacity04,
+            'DiskDriveCaption01': computer.DiskDriveCaption01,
+            'DiskDriveSize01': computer.DiskDriveSize01,
+            'DiskDriveCaption02': computer.DiskDriveCaption02,
+            'DiskDriveSize02': computer.DiskDriveSize02,
+            'DiskDriveCaption03': computer.DiskDriveCaption03,
+            'DiskDriveSize03': computer.DiskDriveSize03,
+            'DiskDriveCaption04': computer.DiskDriveCaption04,
+            'DiskDriveSize04': computer.DiskDriveSize04,
+            'IPv4Address': computer.IPv4Address
         }
     })

@@ -27,6 +27,7 @@ export default {
           })
           .then(response => {
             if (response.data.errCode === '0') {
+              sessionStorage.setItem('mac', response.data.params.MACAddress)
               this.$emit('setStepState', 3)
             } else {
               this.$message({

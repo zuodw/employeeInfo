@@ -1,8 +1,12 @@
 <template>
-  <div>
-    <EmployeeInfoCardVue></EmployeeInfoCardVue>
-    <ComputerInfoCardVue></ComputerInfoCardVue>
-  </div>
+  <el-row>
+    <el-col :span="8">
+      <EmployeeInfoCardVue></EmployeeInfoCardVue>
+    </el-col>
+    <el-col :span="8">
+      <ComputerInfoCardVue></ComputerInfoCardVue>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -13,8 +17,11 @@ export default {
   data () {
     return {
       data: {
+        isComputerInfoBind: false
       }
     }
+  },
+  created: function () {
   },
   components: {
     'EmployeeInfoCardVue': EmployeeInfoCard,
