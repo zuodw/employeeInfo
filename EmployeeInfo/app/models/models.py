@@ -25,10 +25,10 @@ class ComputerInfo(Base):
     # 电脑系统
     OperatingSystemCaption = sa.Column(sa.String(100), nullable=True)
 
-    # 处理器(CPU)名
+    # 系统名(例:PC108)
     ProcessorSystemName = sa.Column(sa.String(100), nullable=True)
 
-    # 系统名(例:PC108)
+    # 处理器(CPU)名
     ProcessorName = sa.Column(sa.String(100), nullable=True)
 
     # 内存厂商01
@@ -37,8 +37,14 @@ class ComputerInfo(Base):
     # 内存型号01
     PhysicalMemoryPartNumber01 = sa.Column(sa.String(100), nullable=True)
 
+    # 内存序列号01
+    PhysicalMemorySerialNumber01 = sa.Column(sa.String(100), nullable=True)
+
     # 内存大小01
     PhysicalMemoryCapacity01 = sa.Column(sa.String(10), nullable=True)
+
+    # 内存速度01
+    PhysicalMemorySpeed01 = sa.Column(sa.String(10), nullable=True)
 
     # 内存厂商02
     PhysicalMemoryManufacturer02 = sa.Column(sa.String(100), nullable=True)
@@ -46,8 +52,14 @@ class ComputerInfo(Base):
     # 内存型号02
     PhysicalMemoryPartNumber02 = sa.Column(sa.String(100), nullable=True)
 
+    # 内存序列号02
+    PhysicalMemorySerialNumber02 = sa.Column(sa.String(100), nullable=True)
+
     # 内存大小02
     PhysicalMemoryCapacity02 = sa.Column(sa.String(10), nullable=True)
+
+    # 内存速度02
+    PhysicalMemorySpeed02 = sa.Column(sa.String(10), nullable=True)
 
     # 内存厂商03
     PhysicalMemoryManufacturer03 = sa.Column(sa.String(100), nullable=True)
@@ -55,8 +67,14 @@ class ComputerInfo(Base):
     # 内存型号03
     PhysicalMemoryPartNumber03 = sa.Column(sa.String(100), nullable=True)
 
+    # 内存序列号03
+    PhysicalMemorySerialNumber03 = sa.Column(sa.String(100), nullable=True)
+
     # 内存大小03
     PhysicalMemoryCapacity03 = sa.Column(sa.String(10), nullable=True)
+
+    # 内存速度03
+    PhysicalMemorySpeed03 = sa.Column(sa.String(10), nullable=True)
 
     # 内存厂商04
     PhysicalMemoryManufacturer04 = sa.Column(sa.String(100), nullable=True)
@@ -64,29 +82,47 @@ class ComputerInfo(Base):
     # 内存型号04
     PhysicalMemoryPartNumber04 = sa.Column(sa.String(100), nullable=True)
 
+    # 内存序列号04
+    PhysicalMemorySerialNumber04 = sa.Column(sa.String(100), nullable=True)
+
     # 内存大小04
     PhysicalMemoryCapacity04 = sa.Column(sa.String(10), nullable=True)
 
-    # 硬盘名称01
-    DiskDriveCaption01 = sa.Column(sa.String(100), nullable=True)
+    # 内存速度04
+    PhysicalMemorySpeed04 = sa.Column(sa.String(10), nullable=True)
+
+    # 硬盘型号01
+    DiskDriveModel01 = sa.Column(sa.String(100), nullable=True)
+
+    # 硬盘序列号01
+    DiskDriveSerialNumber01 = sa.Column(sa.String(100), nullable=True)
 
     # 硬盘大小01
     DiskDriveSize01 = sa.Column(sa.String(10), nullable=True)
 
-    # 硬盘名称02
-    DiskDriveCaption02 = sa.Column(sa.String(100), nullable=True)
+    # 硬盘型号02
+    DiskDriveModel02 = sa.Column(sa.String(100), nullable=True)
+
+    # 硬盘序列号02
+    DiskDriveSerialNumber02 = sa.Column(sa.String(100), nullable=True)
 
     # 硬盘大小02
     DiskDriveSize02 = sa.Column(sa.String(10), nullable=True)
 
-    # 硬盘名称03
-    DiskDriveCaption03 = sa.Column(sa.String(100), nullable=True)
+    # 硬盘型号03
+    DiskDriveModel03 = sa.Column(sa.String(100), nullable=True)
+
+    # 硬盘序列号03
+    DiskDriveSerialNumber03 = sa.Column(sa.String(100), nullable=True)
 
     # 硬盘大小03
     DiskDriveSize03 = sa.Column(sa.String(10), nullable=True)
 
-    # 硬盘名称04
-    DiskDriveCaption04 = sa.Column(sa.String(100), nullable=True)
+    # 硬盘型号04
+    DiskDriveModel04 = sa.Column(sa.String(100), nullable=True)
+
+    # 硬盘序列号04
+    DiskDriveSerialNumber04 = sa.Column(sa.String(100), nullable=True)
 
     # 硬盘大小04
     DiskDriveSize04 = sa.Column(sa.String(10), nullable=True)
@@ -128,6 +164,9 @@ class Employee(Base):
     # 护照ID(可以为空)
     passportId = sa.Column(sa.String(20), nullable=True)
 
+    # 年龄(根据身份证号自动生成)
+    age = sa.Column(sa.Integer, nullable=True)
+
     # 生日(根据身份证号自动生成)
     birthday = sa.Column(sa.Date, nullable=True)
 
@@ -158,6 +197,9 @@ class Employee(Base):
     # 电脑编号
     MACAddress = sa.Column(sa.String(20), ForeignKey('computer.MACAddress'))
     computer = relationship("ComputerInfo", backref="computer_of_employee")
+
+    # 是否管理员
+    isAdmin = sa.Column(sa.Boolean, nullable=True)
 
     # 备注
     comments = sa.Column(sa.String(500), nullable=True)

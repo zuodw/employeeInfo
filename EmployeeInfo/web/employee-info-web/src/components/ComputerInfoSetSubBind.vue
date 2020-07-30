@@ -1,11 +1,9 @@
 <template>
   <center>
-    <el-card class="box-card" style="text-align:left">
-      STEP1.  请确保您已经成功执行PC信息检测工具。 <br/>
-      STEP2.  点击下方按钮,您当前账户将与上传成功的PC信息绑定。
-    </el-card>
-    <el-card class="box-card" >
-      <el-button type="text" @click="bindComputerInfo()">点击绑定PC信息</el-button>
+    <el-card class="box-card">
+      <el-button type="text" @click="bindComputerInfo()">
+        <div style="font-size:20px">点击绑定PC信息</div>
+      </el-button>
     </el-card>
   </center>
 </template>
@@ -28,11 +26,11 @@ export default {
           .then(response => {
             if (response.data.errCode === '0') {
               sessionStorage.setItem('mac', response.data.params.MACAddress)
-              this.$emit('setStepState', 3)
+              this.$emit('setStepState', 2)
             } else {
               this.$message({
                 type: 'error',
-                message: 'PC信息绑定失败，请重试。'
+                message: 'PC信息绑定失败，请确保已正常执行PC信息检测工具'
               })
             }
           })
@@ -49,6 +47,6 @@ export default {
 
 <style>
 .box-card {
-  width: 600px;
+  width: 300px;
 }
 </style>

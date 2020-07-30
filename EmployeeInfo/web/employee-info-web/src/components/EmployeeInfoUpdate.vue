@@ -43,7 +43,12 @@
             <el-input v-model="formData.speciality"></el-input>
           </el-form-item>
           <el-form-item label="部门">
-            <el-input v-model="formData.department"></el-input>
+            <el-select v-model="formData.department" placeholder="请选择部门">
+              <el-option label="嵌入式" value="嵌入式"></el-option>
+              <el-option label="DB" value="DB"></el-option>
+              <el-option label="WEB" value="WEB"></el-option>
+              <el-option label="人事" value="人事"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="邮箱地址">
             <el-input :disabled="true" v-model="formData.mail"></el-input>

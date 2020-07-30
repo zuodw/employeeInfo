@@ -3,6 +3,7 @@ import random
 import string
 import os
 import time
+from datetime import datetime
 
 from flask import request, jsonify, send_from_directory
 from flask_mail import Message
@@ -61,6 +62,7 @@ def GetEmployeeInfoByMail():
             'speciality': employee.speciality,
             'department': employee.department,
             'phoneNum': employee.phoneNum,
+            'age': employee.age,
             'birthday': str(employee.birthday),
             'MACAddress': employee.MACAddress
         }
@@ -76,15 +78,17 @@ def UpdateEmployeeInfo():
     employee.sex = data['params']['sex']
     employee.idCard = data['params']['idCard']
     if employee.idCard:
+        employee.age = int(datetime.now().year) - int(employee.idCard[6:10])
         employee.birthday = employee.idCard[6:14]
     else:
-        employee.birthday = '19491001'
+        employee.age = 0
+        employee.birthday = '20160914'
     employee.nation = data['params']['nation']
     employee.nativePlace = data['params']['nativePlace']
     employee.education = data['params']['education']
     employee.school = data['params']['school']
     employee.speciality = data['params']['speciality']
-    employee.department = ''
+    employee.department = data['params']['department']
     employee.phoneNum = data['params']['phoneNum']
     employee.mail = data['params']['mail']
 
@@ -202,29 +206,44 @@ def SetComputerInfo():
     computer.ProcessorName = data['Processor']['Name']
     computer.PhysicalMemoryManufacturer01 = data['PhysicalMemory'][0]['Manufacturer']
     computer.PhysicalMemoryPartNumber01 = data['PhysicalMemory'][0]['PartNumber']
+    computer.PhysicalMemorySerialNumber01 = data['PhysicalMemory'][0]['SerialNumber']
     computer.PhysicalMemoryCapacity01 = data['PhysicalMemory'][0]['Capacity']
+    computer.PhysicalMemorySpeed01 = data['PhysicalMemory'][0]['Speed']
     computer.PhysicalMemoryManufacturer02 = data['PhysicalMemory'][1]['Manufacturer'] if len(
         data['PhysicalMemory']) > 1 else ''
     computer.PhysicalMemoryPartNumber02 = data['PhysicalMemory'][1]['PartNumber'] if len(
         data['PhysicalMemory']) > 1 else ''
+    computer.PhysicalMemorySerialNumber02 = data['PhysicalMemory'][1]['SerialNumber'] if len(
+        data['PhysicalMemory']) > 1 else ''
     computer.PhysicalMemoryCapacity02 = data['PhysicalMemory'][1]['Capacity'] if len(data['PhysicalMemory']) > 1 else ''
+    computer.PhysicalMemorySpeed02 = data['PhysicalMemory'][1]['Speed'] if len(data['PhysicalMemory']) > 1 else ''
     computer.PhysicalMemoryManufacturer03 = data['PhysicalMemory'][2]['Manufacturer'] if len(
         data['PhysicalMemory']) > 2 else ''
     computer.PhysicalMemoryPartNumber03 = data['PhysicalMemory'][2]['PartNumber'] if len(
         data['PhysicalMemory']) > 2 else ''
+    computer.PhysicalMemorySerialNumber03 = data['PhysicalMemory'][2]['SerialNumber'] if len(
+        data['PhysicalMemory']) > 2 else ''
     computer.PhysicalMemoryCapacity03 = data['PhysicalMemory'][2]['Capacity'] if len(data['PhysicalMemory']) > 2 else ''
+    computer.PhysicalMemorySpeed03 = data['PhysicalMemory'][2]['Speed'] if len(data['PhysicalMemory']) > 2 else ''
     computer.PhysicalMemoryManufacturer04 = data['PhysicalMemory'][3]['Manufacturer'] if len(
         data['PhysicalMemory']) > 3 else ''
     computer.PhysicalMemoryPartNumber04 = data['PhysicalMemory'][3]['PartNumber'] if len(
         data['PhysicalMemory']) > 3 else ''
+    computer.PhysicalMemorySerialNumber04 = data['PhysicalMemory'][3]['SerialNumber'] if len(
+        data['PhysicalMemory']) > 3 else ''
     computer.PhysicalMemoryCapacity04 = data['PhysicalMemory'][3]['Capacity'] if len(data['PhysicalMemory']) > 3 else ''
-    computer.DiskDriveCaption01 = data['DiskDrive'][0]['Caption']
+    computer.PhysicalMemorySpeed04 = data['PhysicalMemory'][3]['Speed'] if len(data['PhysicalMemory']) > 3 else ''
+    computer.DiskDriveModel01 = data['DiskDrive'][0]['Model']
+    computer.DiskDriveSerialNumber01 = data['DiskDrive'][0]['SerialNumber']
     computer.DiskDriveSize01 = data['DiskDrive'][0]['Size']
-    computer.DiskDriveCaption02 = data['DiskDrive'][1]['Caption'] if len(data['DiskDrive']) > 1 else ''
+    computer.DiskDriveModel02 = data['DiskDrive'][1]['Model'] if len(data['DiskDrive']) > 1 else ''
+    computer.DiskDriveSerialNumber02 = data['DiskDrive'][1]['SerialNumber'] if len(data['DiskDrive']) > 1 else ''
     computer.DiskDriveSize02 = data['DiskDrive'][1]['Size'] if len(data['DiskDrive']) > 1 else ''
-    computer.DiskDriveCaption03 = data['DiskDrive'][2]['Caption'] if len(data['DiskDrive']) > 2 else ''
+    computer.DiskDriveModel03 = data['DiskDrive'][2]['Model'] if len(data['DiskDrive']) > 2 else ''
+    computer.DiskDriveSerialNumber03 = data['DiskDrive'][2]['SerialNumber'] if len(data['DiskDrive']) > 2 else ''
     computer.DiskDriveSize03 = data['DiskDrive'][2]['Size'] if len(data['DiskDrive']) > 2 else ''
-    computer.DiskDriveCaption04 = data['DiskDrive'][3]['Caption'] if len(data['DiskDrive']) > 3 else ''
+    computer.DiskDriveModel04 = data['DiskDrive'][3]['Model'] if len(data['DiskDrive']) > 3 else ''
+    computer.DiskDriveSerialNumber04 = data['DiskDrive'][3]['SerialNumber'] if len(data['DiskDrive']) > 3 else ''
     computer.DiskDriveSize04 = data['DiskDrive'][3]['Size'] if len(data['DiskDrive']) > 3 else ''
     computer.IPv4Address = data['IPAddress']['IPv4']
     computer.IPv6Address = data['IPAddress']['IPv6']
@@ -242,13 +261,15 @@ def BindComputerInfo():
     userMail = data['params']['mail']
 
     computer = ComputerInfoController.query_byIPv4(request.remote_addr)
+    if not computer:
+        return jsonify({'errCode': '-1', 'errMsg': 'Computer Not Found.'})
 
     if not userMail:
-        return jsonify({'errCode': '-1', 'errMsg': 'Mail Not Found.'})
+        return jsonify({'errCode': '-2', 'errMsg': 'Mail Not Found.'})
 
     employee = EmployeeController.query_byMail(userMail)
     if not employee:
-        return jsonify({'errCode': '-2', 'errMsg': 'Employee Not Found.'})
+        return jsonify({'errCode': '-3', 'errMsg': 'Employee Not Found.'})
 
     employee.MACAddress = computer.MACAddress
     EmployeeController.update(employee)
@@ -283,23 +304,85 @@ def GetComputerInfoByMac():
             'ProcessorName': computer.ProcessorName,
             'PhysicalMemoryManufacturer01': computer.PhysicalMemoryManufacturer01,
             'PhysicalMemoryPartNumber01': computer.PhysicalMemoryPartNumber01,
+            'PhysicalMemorySerialNumber01': computer.PhysicalMemorySerialNumber01,
             'PhysicalMemoryCapacity01': computer.PhysicalMemoryCapacity01,
+            'PhysicalMemorySpeed01': computer.PhysicalMemorySpeed01,
             'PhysicalMemoryManufacturer02': computer.PhysicalMemoryManufacturer02,
             'PhysicalMemoryPartNumber02': computer.PhysicalMemoryPartNumber02,
             'PhysicalMemoryCapacity02': computer.PhysicalMemoryCapacity02,
+            'PhysicalMemorySpeed02': computer.PhysicalMemorySpeed02,
             'PhysicalMemoryManufacturer03': computer.PhysicalMemoryManufacturer03,
             'PhysicalMemoryPartNumber03': computer.PhysicalMemoryPartNumber03,
             'PhysicalMemoryCapacity03': computer.PhysicalMemoryCapacity03,
+            'PhysicalMemorySpeed03': computer.PhysicalMemorySpeed03,
             'PhysicalMemoryManufacturer04': computer.PhysicalMemoryManufacturer04,
             'PhysicalMemoryPartNumber04': computer.PhysicalMemoryPartNumber04,
             'PhysicalMemoryCapacity04': computer.PhysicalMemoryCapacity04,
-            'DiskDriveCaption01': computer.DiskDriveCaption01,
+            'PhysicalMemorySpeed04': computer.PhysicalMemorySpeed04,
+            'DiskDriveModel01': computer.DiskDriveModel01,
+            'DiskDriveSerialNumber01': computer.DiskDriveSerialNumber01,
             'DiskDriveSize01': computer.DiskDriveSize01,
-            'DiskDriveCaption02': computer.DiskDriveCaption02,
+            'DiskDriveModel02': computer.DiskDriveModel02,
+            'DiskDriveSerialNumber02': computer.DiskDriveSerialNumber02,
             'DiskDriveSize02': computer.DiskDriveSize02,
-            'DiskDriveCaption03': computer.DiskDriveCaption03,
+            'DiskDriveModel03': computer.DiskDriveModel03,
+            'DiskDriveSerialNumber03': computer.DiskDriveSerialNumber03,
             'DiskDriveSize03': computer.DiskDriveSize03,
-            'DiskDriveCaption04': computer.DiskDriveCaption04,
+            'DiskDriveModel04': computer.DiskDriveModel04,
+            'DiskDriveSerialNumber04': computer.DiskDriveSerialNumber04,
+            'DiskDriveSize04': computer.DiskDriveSize04,
+            'IPv4Address': computer.IPv4Address
+        }
+    })
+
+
+@app.route('/api/GetComputerInfoByUserMail')
+def GetComputerInfoByUserMail():
+    if 'mail' not in request.args.to_dict():
+        return jsonify({'errCode': '-6', 'errMsg': 'Mail未指定'})
+
+    computer = ComputerInfoController.query_byMail(request.args.to_dict()['mail'])
+    if not computer:
+        return jsonify({'errCode': '-5', 'errMsg': 'PC信息不存在'})
+
+    return jsonify({
+        'errCode': '0',
+        'errMsg': 'OK',
+        'params': {
+            'MACAddress': computer.MACAddress,
+            'ComputerSystemManufacturer': computer.ComputerSystemManufacturer,
+            'ComputerSystemModel': computer.ComputerSystemModel,
+            'OperatingSystemCaption': computer.OperatingSystemCaption,
+            'ProcessorSystemName': computer.ProcessorSystemName,
+            'ProcessorName': computer.ProcessorName,
+            'PhysicalMemoryManufacturer01': computer.PhysicalMemoryManufacturer01,
+            'PhysicalMemoryPartNumber01': computer.PhysicalMemoryPartNumber01,
+            'PhysicalMemorySerialNumber01': computer.PhysicalMemorySerialNumber01,
+            'PhysicalMemoryCapacity01': computer.PhysicalMemoryCapacity01,
+            'PhysicalMemorySpeed01': computer.PhysicalMemorySpeed01,
+            'PhysicalMemoryManufacturer02': computer.PhysicalMemoryManufacturer02,
+            'PhysicalMemoryPartNumber02': computer.PhysicalMemoryPartNumber02,
+            'PhysicalMemoryCapacity02': computer.PhysicalMemoryCapacity02,
+            'PhysicalMemorySpeed02': computer.PhysicalMemorySpeed02,
+            'PhysicalMemoryManufacturer03': computer.PhysicalMemoryManufacturer03,
+            'PhysicalMemoryPartNumber03': computer.PhysicalMemoryPartNumber03,
+            'PhysicalMemoryCapacity03': computer.PhysicalMemoryCapacity03,
+            'PhysicalMemorySpeed03': computer.PhysicalMemorySpeed03,
+            'PhysicalMemoryManufacturer04': computer.PhysicalMemoryManufacturer04,
+            'PhysicalMemoryPartNumber04': computer.PhysicalMemoryPartNumber04,
+            'PhysicalMemoryCapacity04': computer.PhysicalMemoryCapacity04,
+            'PhysicalMemorySpeed04': computer.PhysicalMemorySpeed04,
+            'DiskDriveModel01': computer.DiskDriveModel01,
+            'DiskDriveSerialNumber01': computer.DiskDriveSerialNumber01,
+            'DiskDriveSize01': computer.DiskDriveSize01,
+            'DiskDriveModel02': computer.DiskDriveModel02,
+            'DiskDriveSerialNumber02': computer.DiskDriveSerialNumber02,
+            'DiskDriveSize02': computer.DiskDriveSize02,
+            'DiskDriveModel03': computer.DiskDriveModel03,
+            'DiskDriveSerialNumber03': computer.DiskDriveSerialNumber03,
+            'DiskDriveSize03': computer.DiskDriveSize03,
+            'DiskDriveModel04': computer.DiskDriveModel04,
+            'DiskDriveSerialNumber04': computer.DiskDriveSerialNumber04,
             'DiskDriveSize04': computer.DiskDriveSize04,
             'IPv4Address': computer.IPv4Address
         }

@@ -15,6 +15,9 @@
       邮箱： {{ this.data.mail }}
     </div>
     <div class="text item">
+      年龄： {{ this.data.age }}
+    </div>
+    <div class="text item">
       生日： {{ this.data.birthday }}
     </div>
     <div class="text item">
@@ -64,6 +67,7 @@ export default {
           this.data.sex = response.data.params.sex
           this.data.mail = response.data.params.mail
           this.data.nation = response.data.params.nation
+          this.data.age = response.data.params.age
           this.data.birthday = response.data.params.birthday
           this.data.nativePlace = response.data.params.nativePlace
           this.data.idCard = response.data.params.idCard

@@ -8,14 +8,14 @@
             <el-input v-model="formData.mail"></el-input>
             <el-button type="text" @click="applyVerifyCode()">发送验证码</el-button>
           </el-form-item>
+          <el-form-item label="验证码" prop="verifyCode">
+            <el-input v-model="formData.verifyCode"></el-input>
+          </el-form-item>
           <el-form-item label="密码" prop="pass">
             <el-input type="password" v-model="formData.pass" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="确认密码" prop="checkPass">
             <el-input type="password" v-model="formData.checkPass" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="验证码" prop="verifyCode">
-            <el-input v-model="formData.verifyCode"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('formData')">提交</el-button>
@@ -91,6 +91,19 @@ export default {
               type: 'success',
               center: true
             })
+          } else if (response.data.errCode === '-2') {
+            this.$confirm('该邮件已经注册!请直接登录。', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'info'
+            }).then(() => {
+              this.$router.replace('/signin')
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消登录'
+              })
+            })
           } else {
             this.$message({
               message: response.data.errMsg,
@@ -102,7 +115,6 @@ export default {
     },
     submitForm (formData) {
       this.$refs[formData].validate((valid) => {
-        console.log(valid)
         if (valid) {
           this.$axios
             .post('/api/SignUp', {params: this.formData})

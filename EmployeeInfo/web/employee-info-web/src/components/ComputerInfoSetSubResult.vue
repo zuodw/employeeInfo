@@ -1,15 +1,25 @@
 <template>
-  <div style="text-align:center">
-    <el-button type="primary" @click="toMyPage()">点击前往个人主页</el-button>
-  </div>
+  <center>
+    <el-card class="box-card">
+      <el-button type="text" @click="refreshComputerInfoCard()">
+        <div style="font-size:20px">PC信息绑定成功，点击刷新</div>
+      </el-button>
+    </el-card>
+  </center>
 </template>
 
 <script>
 export default {
   methods: {
-    toMyPage () {
-      this.$router.replace('/mypage')
+    refreshComputerInfoCard () {
+      this.$emit('updateComputerInfoCard')
     }
   }
 }
 </script>
+
+<style>
+.box-card {
+  width: 300px;
+}
+</style>
